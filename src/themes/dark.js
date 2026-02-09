@@ -5,43 +5,42 @@ const theme = createTheme({
     mode: 'dark',
 
     base: {
-      dark: '#0F1214',   // app background (neutral, calm)
-      light: '#161A1F',  // surfaces (slightly lifted)
-      hard: '#E5E7EB',   // primary text (soft white)
-      mid: '#2C3238',    // borders / outlines
-      soft: '#9AA1A8',   // secondary text
-      accent: '#8B4652', // muted wine accent (controlled)
+      dark: '#0E0C12',   // app background (near-black, neutral-violet)
+      light: '#14111B',  // surfaces (subtle lift, very low chroma)
+      hard: '#D6D1E0',   // primary text (tamed, no glare)
+      mid: '#26212F',    // borders / outlines (quiet)
+      soft: '#9D97AA',   // secondary text (calm, readable)
+      accent: '#6F5A8C', // muted purple accent (smoky)
     },
 
-    // Identity color — present but never loud
     primary: {
-      main: '#5F7F78',        // desaturated teal-green (quiet)
-      contrastText: '#0F1214',
+      main: '#62537E',        // smoky violet (identity, very restrained)
+      contrastText: '#0E0C12',
     },
 
     secondary: {
-      main: '#8B4652',
-      contrastText: '#E5E7EB',
+      main: '#6F5A8C',
+      contrastText: '#D6D1E0',
     },
 
     background: {
-      default: '#0F1214',
-      paper: '#161A1F',
+      default: '#0E0C12',
+      paper: '#14111B',
     },
 
     text: {
-      primary: '#E5E7EB',
-      secondary: '#B0B6BC',
-      disabled: 'rgba(229, 231, 235, 0.38)',
+      primary: '#D6D1E0',
+      secondary: '#ABA6B7',
+      disabled: 'rgba(214, 209, 224, 0.34)',
     },
 
-    divider: 'rgba(176, 182, 188, 0.16)',
+    divider: 'rgba(171, 166, 183, 0.13)',
 
     action: {
-      hover: 'rgba(95, 127, 120, 0.10)',
-      selected: 'rgba(95, 127, 120, 0.18)',
-      disabled: 'rgba(229, 231, 235, 0.28)',
-      disabledBackground: 'rgba(176, 182, 188, 0.12)',
+      hover: 'rgba(98, 83, 126, 0.08)',
+      selected: 'rgba(98, 83, 126, 0.13)',
+      disabled: 'rgba(214, 209, 224, 0.24)',
+      disabledBackground: 'rgba(171, 166, 183, 0.09)',
     },
   },
 
@@ -57,12 +56,12 @@ const theme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          color: '#E5E7EB',
+          color: '#D6D1E0',
           '&.Mui-selected': {
-            backgroundColor: 'rgba(95, 127, 120, 0.18)',
+            backgroundColor: 'rgba(98, 83, 126, 0.13)',
           },
           '&:hover': {
-            backgroundColor: 'rgba(95, 127, 120, 0.10)',
+            backgroundColor: 'rgba(98, 83, 126, 0.08)',
           },
         },
       },
@@ -71,11 +70,11 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         text: {
-          color: '#E5E7EB',
+          color: '#D6D1E0',
           letterSpacing: '0.5px',
           fontWeight: 500,
           '&:hover': {
-            backgroundColor: 'rgba(95, 127, 120, 0.12)',
+            backgroundColor: 'rgba(98, 83, 126, 0.10)',
           },
         },
       },
