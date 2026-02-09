@@ -10,6 +10,7 @@ import CoursePage from "./components/course-page/CoursePage";
 import Result from "./components/result/Result";
 import Exam from "./components/exam/Exam";
 import FilterProvider from "./providers/FilterProvider";
+import NotFound from "./components/not-found/NotFound";
 
 function App() {
   return (
@@ -40,7 +41,9 @@ function App() {
               path="/courses/:courseId/assignments/:assignmentId"
               element={<AssignmentPage />}
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
+
           <Footer />
         </Box>
       </FilterProvider>
