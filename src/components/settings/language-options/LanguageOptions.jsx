@@ -3,6 +3,9 @@ import { Button, Menu, MenuItem, Fade } from '@mui/material';
 import { LanguageContext } from '../../../contexts/LanguageContext';
 import english from '../../../languages/english';
 import bulgarian from '../../../languages/bulgarian';
+import german from '../../../languages/german';
+import french from '../../../languages/french';
+import spanish from '../../../languages/spanish';
 import useLanguage from '../../../hooks/useLanguage';
 
 export default function LanguageOptions() {
@@ -63,9 +66,9 @@ export default function LanguageOptions() {
             >
                 <MenuItem onClick={() => languageChangeHandler(bulgarian)}>{language.bulgarian}</MenuItem>
                 <MenuItem onClick={() => languageChangeHandler(english)}>{language.english}</MenuItem>
-                <MenuItem onClick={handleClose}>Spanish</MenuItem>
-                <MenuItem onClick={handleClose}>French</MenuItem>
-                <MenuItem onClick={handleClose}>German</MenuItem>
+                <MenuItem onClick={() => languageChangeHandler(spanish)}>Spanish</MenuItem>
+                <MenuItem onClick={() => languageChangeHandler(french)}>French</MenuItem>
+                <MenuItem onClick={() => languageChangeHandler(german)}>German</MenuItem>
             </Menu>
         </>
     );
