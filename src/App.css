@@ -1,0 +1,56 @@
+/* 1. Reset & Consistent Box Model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Set baseline for body */
+body {
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 3. App root flex layout */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 4. Responsive images */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* 5. Anchor defaults */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 6. Button/input reset */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  outline: none;
+  border: none;
+  background: none;
+}
+
+/* 7. Optional scrollbar styling (theme-friendly) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #FDF0D5; /* your theme primary */
+  border-radius: 8px;
+}
