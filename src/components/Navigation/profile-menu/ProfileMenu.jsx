@@ -1,9 +1,8 @@
 // ProfileMenu.jsx
 import {
   Backdrop,
-  Button,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Popover,
@@ -23,27 +22,47 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
   const [joinOpen, setJoinOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [settingsOpen, settingsSetOpen] = useState(false);
-  let language = useLanguage();
+  const language = useLanguage();
 
   const joinOpenHandler = () => {
     setJoinOpen(true);
     onClose();
   };
+
   const joinCloseHandler = () => setJoinOpen(false);
+
   const createOpenHandler = () => {
     setCreateOpen(true);
     onClose();
   };
+
   const createCloseHandler = () => setCreateOpen(false);
+
   const settingsOpenHandler = () => {
     settingsSetOpen(true);
     onClose();
   };
+
   const settingsCloseHandler = () => settingsSetOpen(false);
+
+  const menuItemStyles = {
+    px: {
+      xs: 1.5,
+      sm: 2,
+    },
+    py: 1.1,
+    minHeight: {
+      xs: 46,
+      sm: 48,
+    },
+    transition: "background-color 0.2s ease",
+    "&:hover": {
+      backgroundColor: "rgba(244, 255, 248, 0.1)",
+    },
+  };
 
   return (
     <>
-      {/* Backdrop */}
       <Backdrop
         open={open}
         onClick={onClose}
@@ -53,7 +72,6 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
         }}
       />
 
-      {/* Anchored popover menu */}
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -64,80 +82,121 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
           onClick: (e) => e.stopPropagation(),
           sx: {
             backgroundColor: "base.mid",
-            borderRadius: 2,
+            borderRadius: 1.5,
             boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
-            minWidth: 220,
-            py: 1,
+            width: {
+              xs: "calc(100vw - 24px)",
+              sm: 240,
+            },
+            maxWidth: 240,
+            py: 0.75,
             mt: 1,
             color: "base.light",
             zIndex: 1301,
+            overflow: "hidden",
           },
         }}
       >
-        <List>
-          <ListItem
-            button
-            onClick={joinOpenHandler}
-            sx={{
-              "&:hover": {
-                backgroundColor: "rgba(244, 255, 248, 0.1)",
-              },
-              cursor: "pointer",
-            }}
-          >
-            <ListItemIcon sx={{ color: "base.light", minWidth: 36 }}>
-              <MeetingRoomIcon />
+        <List disablePadding>
+          <ListItemButton onClick={joinOpenHandler} sx={menuItemStyles}>
+            <ListItemIcon
+              sx={{
+                color: "base.light",
+                minWidth: {
+                  xs: 34,
+                  sm: 36,
+                },
+              }}
+            >
+              <MeetingRoomIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary={language.joinCourse} />
-          </ListItem>
+            <ListItemText
+              primary={language.joinCourse}
+              primaryTypographyProps={{
+                fontSize: {
+                  xs: "0.95rem",
+                  sm: "1rem",
+                },
+                fontWeight: 500,
+                lineHeight: 1.2,
+              }}
+            />
+          </ListItemButton>
 
-          <ListItem
-            button
-            onClick={createOpenHandler}
-            sx={{
-              "&:hover": {
-                backgroundColor: "rgba(244, 255, 248, 0.1)",
-              },
-              cursor: "pointer",
-            }}
-          >
-            <ListItemIcon sx={{ color: "base.light", minWidth: 36 }}>
-              <GroupAddIcon />
+          <ListItemButton onClick={createOpenHandler} sx={menuItemStyles}>
+            <ListItemIcon
+              sx={{
+                color: "base.light",
+                minWidth: {
+                  xs: 34,
+                  sm: 36,
+                },
+              }}
+            >
+              <GroupAddIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary={language.createCourse} />
-          </ListItem>
+            <ListItemText
+              primary={language.createCourse}
+              primaryTypographyProps={{
+                fontSize: {
+                  xs: "0.95rem",
+                  sm: "1rem",
+                },
+                fontWeight: 500,
+                lineHeight: 1.2,
+              }}
+            />
+          </ListItemButton>
 
-          <ListItem
-            button
-            onClick={settingsOpenHandler}
-            sx={{
-              "&:hover": {
-                backgroundColor: "rgba(244, 255, 248, 0.1)",
-              },
-              cursor: "pointer",
-            }}
-          >
-            <ListItemIcon sx={{ color: "base.light", minWidth: 36 }}>
-              <SettingsIcon />
+          <ListItemButton onClick={settingsOpenHandler} sx={menuItemStyles}>
+            <ListItemIcon
+              sx={{
+                color: "base.light",
+                minWidth: {
+                  xs: 34,
+                  sm: 36,
+                },
+              }}
+            >
+              <SettingsIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary={language.settings} />
-          </ListItem>
+            <ListItemText
+              primary={language.settings}
+              primaryTypographyProps={{
+                fontSize: {
+                  xs: "0.95rem",
+                  sm: "1rem",
+                },
+                fontWeight: 500,
+                lineHeight: 1.2,
+              }}
+            />
+          </ListItemButton>
 
-          <ListItem
-            button
-            onClick={onClose}
-            sx={{
-              "&:hover": {
-                backgroundColor: "rgba(244, 255, 248, 0.1)",
-              },
-              cursor: "pointer",
-            }}
-          >
-            <ListItemIcon sx={{ color: "base.light", minWidth: 36 }}>
-              <LogoutIcon />
+          <ListItemButton onClick={onClose} sx={menuItemStyles}>
+            <ListItemIcon
+              sx={{
+                color: "base.light",
+                minWidth: {
+                  xs: 34,
+                  sm: 36,
+                },
+              }}
+            >
+              <LogoutIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary={language.logout} />
-          </ListItem>
+            <ListItemText
+              primary={language.logout}
+              primaryTypographyProps={{
+                fontSize: {
+                  xs: "0.95rem",
+                  sm: "1rem",
+                },
+                fontWeight: 500,
+                lineHeight: 1.2,
+              }}
+            />
+          </ListItemButton>
         </List>
       </Popover>
 

@@ -6,20 +6,23 @@ export default function CourseButtons({
   materialHandler,
   assignmentHandler,
 }) {
-  let language = useLanguage();
+  const language = useLanguage();
 
   const baseButtonSx = {
-    minWidth: 220,          
-    height: 56,            
-    px: 3,
-    fontSize: "0.95rem",
+    width: { xs: "100%", sm: "auto" },
+    minWidth: { sm: 200, md: 220 },
+    height: { xs: 52, sm: 56 },
+
+    px: { xs: 2.5, sm: 3 },
+    fontSize: { xs: "0.9rem", sm: "0.95rem" },
     fontWeight: 600,
     letterSpacing: "0.2px",
     textTransform: "none",
 
-    borderRadius: 0.8,       
+    borderRadius: 0.8,
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
 
     boxShadow: "0 10px 26px rgba(0, 0, 0, 0.14)",
     transition: "all 160ms ease",
@@ -33,11 +36,13 @@ export default function CourseButtons({
     <Box
       sx={{
         display: "flex",
-        gap: 2,
+        flexDirection: { xs: "column", sm: "row" },
+        gap: { xs: 1.5, sm: 2 },
+        width: "100%",
         zIndex: 10,
       }}
     >
-      {/* Задание */}
+      {/* Assignment */}
       <Button
         variant="contained"
         onClick={assignmentHandler}
@@ -57,7 +62,7 @@ export default function CourseButtons({
         {language.assignment}
       </Button>
 
-      {/* Материал */}
+      {/* Material */}
       <Button
         variant="contained"
         endIcon={<AddIcon />}

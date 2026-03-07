@@ -14,7 +14,7 @@ export default function ThemeOptions() {
   const handleClose = () => setAnchorEl(null);
 
   const chooseTheme = (name) => {
-    changeCustomThemeHandler(name); // "light" | "dark"
+    changeCustomThemeHandler(name);
     handleClose();
   };
 
@@ -23,17 +23,21 @@ export default function ThemeOptions() {
       <Button
         onClick={handleClick}
         variant="outlined"
+        fullWidth
         sx={{
           bgcolor: "base.light",
           color: "base.mid",
-          fontSize: "0.9rem",
-          px: 4,
-          py: 0.5,
-          minWidth: "170px",
+          fontSize: { xs: "0.85rem", sm: "0.9rem" },
+          px: { xs: 2, sm: 4 },
+          py: 0.9,
+          minWidth: { xs: "100%", sm: 170 },
+          width: "100%",
           borderColor: "base.mid",
           fontWeight: 500,
           textTransform: "none",
-          borderRadius: 2,
+          borderRadius: 1,
+          justifyContent: "center",
+          whiteSpace: "nowrap",
           "&:hover": {
             bgcolor: "base.soft",
             color: "base.hard",
@@ -49,19 +53,43 @@ export default function ThemeOptions() {
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
+        keepMounted
         PaperProps={{
           sx: {
-            width: 200,
+            width: { xs: 180, sm: 200 },
             maxHeight: 240,
+            mt: 1,
             bgcolor: "base.light",
             color: "base.hard",
-            borderRadius: 2,
+            borderRadius: 1,
             boxShadow: "0px 4px 15px rgba(0,0,0,0.15)",
+            overflow: "hidden",
+          },
+        }}
+        MenuListProps={{
+          sx: {
+            py: 0.5,
           },
         }}
       >
-        <MenuItem onClick={() => chooseTheme("light")}>{language.light}</MenuItem>
-        <MenuItem onClick={() => chooseTheme("dark")}>{language.dark}</MenuItem>
+        <MenuItem
+          onClick={() => chooseTheme("light")}
+          sx={{
+            fontSize: { xs: "0.9rem", sm: "0.95rem" },
+            minHeight: 42,
+          }}
+        >
+          {language.light}
+        </MenuItem>
+        <MenuItem
+          onClick={() => chooseTheme("dark")}
+          sx={{
+            fontSize: { xs: "0.9rem", sm: "0.95rem" },
+            minHeight: 42,
+          }}
+        >
+          {language.dark}
+        </MenuItem>
       </Menu>
     </>
   );

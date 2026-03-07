@@ -13,7 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import useLanguage from "../../hooks/useLanguage";
 
 export default function Register({ open, onClose }) {
-  let language = useLanguage();
+  const language = useLanguage();
 
   return (
     <Backdrop
@@ -22,6 +22,8 @@ export default function Register({ open, onClose }) {
       sx={{
         zIndex: "modal",
         bgcolor: "rgba(0, 0, 0, 0.6)",
+        px: 2,
+        py: { xs: 2, sm: 3 },
       }}
     >
       <Box
@@ -35,17 +37,21 @@ export default function Register({ open, onClose }) {
           elevation={12}
           sx={{
             position: "relative",
-            p: 4,                 // SAME
+            width: "100%",
+            maxHeight: "90vh",
+            overflowY: "auto",
+            px: { xs: 2.5, sm: 4 },
+            py: { xs: 3, sm: 4 },
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 2,               // SAME
+            gap: { xs: 1.75, sm: 2 },
             bgcolor: "background.paper",
             color: "text.primary",
-            borderRadius: 1.6,    // SAME
+            borderRadius: 1,
+            boxSizing: "border-box",
           }}
         >
-          {/* CLOSE */}
           <IconButton
             size="small"
             onClick={onClose}
@@ -62,28 +68,30 @@ export default function Register({ open, onClose }) {
             <CloseIcon />
           </IconButton>
 
-          {/* ICON */}
           <Avatar
             sx={{
               bgcolor: "action.selected",
               color: "primary.main",
+              width: { xs: 44, sm: 48 },
+              height: { xs: 44, sm: 48 },
             }}
           >
             <PersonAddAltIcon />
           </Avatar>
 
-          {/* TITLE */}
           <Typography
             variant="h5"
             sx={{
               fontWeight: 600,
               letterSpacing: "0.3px",
+              textAlign: "center",
+              fontSize: { xs: "1.25rem", sm: "1.5rem" },
+              lineHeight: 1.2,
             }}
           >
             {language.register}
           </Typography>
 
-          {/* FORM */}
           <Box
             component="form"
             sx={{
@@ -91,7 +99,7 @@ export default function Register({ open, onClose }) {
               display: "flex",
               flexDirection: "column",
               gap: 2,
-              mt: 1,
+              mt: 0.5,
             }}
           >
             <TextField
@@ -99,6 +107,7 @@ export default function Register({ open, onClose }) {
               type="email"
               fullWidth
               required
+              size="small"
             />
 
             <TextField
@@ -106,6 +115,7 @@ export default function Register({ open, onClose }) {
               type="password"
               fullWidth
               required
+              size="small"
             />
 
             <TextField
@@ -113,6 +123,7 @@ export default function Register({ open, onClose }) {
               type="password"
               fullWidth
               required
+              size="small"
             />
 
             <Button
@@ -121,6 +132,7 @@ export default function Register({ open, onClose }) {
               fullWidth
               sx={{
                 mt: 1,
+                minHeight: 44,
                 textTransform: "none",
                 fontWeight: 600,
               }}

@@ -14,10 +14,11 @@ export default function AssignmentCard() {
         width: "100%",
         display: "flex",
         alignItems: "center",
-        gap: 4,
-        mt: 3,
-        px: 4,
-        py: 3,
+        gap: { xs: 2, sm: 3, md: 4 },
+        mt: { xs: 2, sm: 2.5, md: 3 },
+        px: { xs: 2, sm: 3, md: 4 },
+        py: { xs: 2, sm: 2.5, md: 3 },
+
         cursor: "pointer",
         backgroundColor: "base.soft",
         borderRadius: 1.4,
@@ -31,10 +32,9 @@ export default function AssignmentCard() {
         "&:hover": {
           transform: "translateY(-3px)",
           boxShadow: "0 18px 45px rgba(0, 0, 0, 0.22)",
-          textDecoration: "none", // extra-safe
+          textDecoration: "none",
         },
 
-        // left accent strip
         "&::before": {
           content: '""',
           position: "absolute",
@@ -49,8 +49,8 @@ export default function AssignmentCard() {
       {/* Icon block */}
       <Box
         sx={{
-          width: 64,
-          height: 64,
+          width: { xs: 48, sm: 56, md: 64 },
+          height: { xs: 48, sm: 56, md: 64 },
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -60,17 +60,29 @@ export default function AssignmentCard() {
           flexShrink: 0,
         }}
       >
-        <AssignmentIcon sx={{ fontSize: 30 }} />
+        <AssignmentIcon
+          sx={{
+            fontSize: { xs: 22, sm: 26, md: 30 },
+          }}
+        />
       </Box>
 
       {/* Text content */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 0.5,
+          minWidth: 0,
+        }}
+      >
         <Typography
           sx={{
-            fontSize: "1rem",
+            fontSize: { xs: "0.95rem", sm: "1rem" },
             fontWeight: 500,
             color: "text.primary",
             letterSpacing: "0.2px",
+            lineHeight: 1.3,
           }}
         >
           Learning Material
@@ -78,9 +90,10 @@ export default function AssignmentCard() {
 
         <Typography
           sx={{
-            fontSize: "0.95rem",
+            fontSize: { xs: "0.88rem", sm: "0.95rem" },
             color: "text.secondary",
             lineHeight: 1.6,
+            wordBreak: "break-word",
           }}
         >
           Lorem ipsum dolor sit amet consectetur adipisicing elit.

@@ -68,7 +68,13 @@ export default function Filter() {
   if (chips.length === 0) return null;
 
   return (
-    <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       <Box
         sx={{
           width: "100%",
@@ -76,24 +82,53 @@ export default function Filter() {
           bgcolor: "background.paper",
           border: 1,
           borderColor: "divider",
-          borderRadius: 1.4,
-          px: 3,
-          py: 2.25,
+          borderRadius: {
+            xs: 1,
+            sm: 1.4,
+          },
+          px: {
+            xs: 1.5,
+            sm: 2.5,
+            md: 3,
+          },
+          py: {
+            xs: 1.5,
+            sm: 2,
+            md: 2.25,
+          },
           boxShadow: 3,
           transform: "translateY(0)",
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={2.5} flexWrap="wrap">
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          alignItems={{ xs: "stretch", md: "center" }}
+          spacing={{ xs: 1.5, sm: 2, md: 2.5 }}
+        >
           <Typography
             variant="body2"
             fontWeight={700}
             color="text.primary"
-            sx={{ letterSpacing: "0.4px", opacity: 0.85 }}
+            sx={{
+              letterSpacing: "0.4px",
+              opacity: 0.85,
+              minWidth: { md: "fit-content" },
+              textAlign: { xs: "left", md: "left" },
+            }}
           >
-            {language.Filters}
+            {language.filters}
           </Typography>
 
-          <Stack direction="row" spacing={1.25} flexWrap="wrap" sx={{ flexGrow: 1 }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            flexWrap="wrap"
+            sx={{
+              flexGrow: 1,
+              alignItems: "center",
+            }}
+          >
             {chips.map((chip, index) => (
               <Grow key={chip.key} in timeout={160 + index * 60}>
                 <Chip
@@ -101,6 +136,7 @@ export default function Filter() {
                   onDelete={chip.onDelete}
                   deleteIcon={<CloseIcon />}
                   sx={{
+                    maxWidth: "100%",
                     borderRadius: 0.6,
                     bgcolor: "background.default",
                     border: 1,
@@ -108,11 +144,21 @@ export default function Filter() {
                     color: "text.primary",
                     fontWeight: 600,
                     px: 0.5,
+                    height: {
+                      xs: 32,
+                      sm: 34,
+                    },
                     boxShadow: 1,
+                    "& .MuiChip-label": {
+                      px: 1,
+                      whiteSpace: "nowrap",
+                    },
                     "& .MuiChip-deleteIcon": {
                       color: "text.secondary",
                       transition: "color 0.2s ease",
-                      "&:hover": { color: "primary.main" },
+                      "&:hover": {
+                        color: "primary.main",
+                      },
                     },
                   }}
                 />
@@ -121,22 +167,33 @@ export default function Filter() {
           </Stack>
 
           <Fade in timeout={220}>
-            <Button
-              variant="text"
-              size="small"
-              onClick={resetFilters}
+            <Box
               sx={{
-                color: "primary.main",
-                fontWeight: 700,
-                textTransform: "none",
-                letterSpacing: "0.4px",
-                whiteSpace: "nowrap",
-                px: 1,
-                "&:hover": { bgcolor: "action.hover" },
+                display: "flex",
+                justifyContent: { xs: "flex-start", md: "flex-end" },
               }}
             >
-              {language.clearAll}
-            </Button>
+              <Button
+                variant="text"
+                size="small"
+                onClick={resetFilters}
+                sx={{
+                  color: "primary.main",
+                  fontWeight: 700,
+                  textTransform: "none",
+                  letterSpacing: "0.4px",
+                  whiteSpace: "nowrap",
+                  alignSelf: "flex-start",
+                  px: 1,
+                  minWidth: "fit-content",
+                  "&:hover": {
+                    bgcolor: "action.hover",
+                  },
+                }}
+              >
+                {language.clearAll}
+              </Button>
+            </Box>
           </Fade>
         </Stack>
       </Box>

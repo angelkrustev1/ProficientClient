@@ -1,4 +1,4 @@
-import { Box } from "@mui/system";
+import { Box } from "@mui/material";
 import CourseMenu from "./course-menu/CourseMenu";
 import AssignmentCard from "./assignment-card/AssignmentCard";
 import CourseButtons from "./course-buttons/CourseButtons";
@@ -18,32 +18,58 @@ export default function Course() {
   const assignmentCloseHandler = () => assignmentSetOpen(false);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: "100%",
+        minWidth: 0,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: { xs: "column", md: "row" },
           justifyContent: "space-between",
-          alignItems: "center",
-          mt: 1,
-          mb: 12,
+          alignItems: { xs: "stretch", md: "center" },
+          gap: { xs: 1.5, sm: 2, md: 3 },
+          mt: { xs: 0.5, sm: 1 },
+          mb: { xs: 3, sm: 4, md: 6, lg: 8 },
         }}
       >
         <CourseButtons
           materialHandler={materialOpenHandler}
           assignmentHandler={assignmentOpenHandler}
         />
-        <CourseMenu />
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "flex-start", md: "flex-end" },
+            width: { xs: "100%", md: "auto" },
+          }}
+        >
+          <CourseMenu />
+        </Box>
       </Box>
 
-      <Box sx={{ mt: 20 }}>
-        <MaterialCreate open={materialOpen} onClose={materialCloseHandler} />
-        <AssignmentCreate
-          open={assignmentOpen}
-          onClose={assignmentCloseHandler}
-        />
-        {false ? (
-          <Box>
+      <MaterialCreate open={materialOpen} onClose={materialCloseHandler} />
+      <AssignmentCreate
+        open={assignmentOpen}
+        onClose={assignmentCloseHandler}
+      />
+
+      <Box
+        sx={{
+          mt: { xs: 2, sm: 3, md: 4 },
+          minWidth: 0,
+        }}
+      >
+        {true ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <AssignmentCard />
             <MaterialCard />
           </Box>

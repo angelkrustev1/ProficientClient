@@ -7,20 +7,14 @@ import ExamCard from "../exam-card/ExamCard";
 export default function ActionCardCarousel() {
   const containerRef = useRef(null);
 
-  const CARD_WIDTH = 315;
-  const GAP = 24;
-  const VISIBLE_CARDS = 3.7;
-
-  const maxWidth = CARD_WIDTH * VISIBLE_CARDS + GAP * (VISIBLE_CARDS - 1);
-
-  const scrollStep = CARD_WIDTH + GAP;
-
   const scroll = (direction) => {
     const el = containerRef.current;
     if (!el) return;
 
+    const step = el.clientWidth * 0.82;
+
     el.scrollBy({
-      left: direction === "left" ? -scrollStep : scrollStep,
+      left: direction === "left" ? -step : step,
       behavior: "smooth",
     });
   };
@@ -29,7 +23,7 @@ export default function ActionCardCarousel() {
     const el = containerRef.current;
     if (!el) return;
 
-    const atStart = el.scrollLeft === 0;
+    const atStart = el.scrollLeft <= 0;
     const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
 
     const shouldHijack =
@@ -46,74 +40,87 @@ export default function ActionCardCarousel() {
     <Box
       sx={{
         position: "relative",
-        maxWidth,
+        width: "100%",
+        maxWidth: {
+          xs: "100%",
+          sm: 720,
+          md: 980,
+          lg: 1220,
+        },
         mx: "auto",
-        px: 1,
+        px: { xs: 0.5, sm: 1.5, md: 2 },
         backgroundColor: "transparent",
       }}
     >
-      {/* LEFT ARROW */}
       <IconButton
         onClick={() => scroll("left")}
         sx={{
           position: "absolute",
-          left: -20,
+          left: { xs: 4, sm: -10, md: -16 },
           top: "50%",
           transform: "translateY(-50%)",
           zIndex: 4,
-
+          width: { xs: 34, sm: 40 },
+          height: { xs: 34, sm: 40 },
           backgroundColor: "background.paper",
           backdropFilter: "blur(6px)",
           boxShadow: "0px 4px 12px rgba(0,0,0,0.14)",
-
           "&:hover": {
             backgroundColor: "action.hover",
           },
         }}
       >
-        <ArrowBackIosNewIcon fontSize="small" />
+        <ArrowBackIosNewIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
       </IconButton>
 
-      {/* RIGHT ARROW */}
       <IconButton
         onClick={() => scroll("right")}
         sx={{
           position: "absolute",
-          right: -20,
+          right: { xs: 4, sm: -10, md: -16 },
           top: "50%",
           transform: "translateY(-50%)",
           zIndex: 4,
-
+          width: { xs: 34, sm: 40 },
+          height: { xs: 34, sm: 40 },
           backgroundColor: "background.paper",
           backdropFilter: "blur(6px)",
           boxShadow: "0px 4px 12px rgba(0,0,0,0.14)",
-
           "&:hover": {
             backgroundColor: "action.hover",
           },
         }}
       >
-        <ArrowForwardIosIcon fontSize="small" />
+        <ArrowForwardIosIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
       </IconButton>
 
-      {/* SCROLL CONTAINER */}
       <Box
         ref={containerRef}
         onWheel={handleWheel}
         sx={{
           display: "flex",
-          gap: `${GAP}px`,
+          gap: { xs: 1.5, sm: 2, md: 3 },
           overflowX: "auto",
           overflowY: "hidden",
-
-          px: 3, // more inner breathing room
-          py: 2,
-
+          px: { xs: 1, sm: 2, md: 3 },
+          py: { xs: 1.5, sm: 2 },
           scrollBehavior: "smooth",
           scrollSnapType: "x proximity",
+          WebkitOverflowScrolling: "touch",
 
           "& > *": {
             scrollSnapAlign: "start",
+            flex: "0 0 auto",
+            width: {
+              xs: "calc(100% - 24px)",
+              sm: "calc(50% - 8px)",
+              md: "315px",
+            },
+            maxWidth: {
+              xs: "calc(100% - 24px)",
+              sm: "calc(50% - 8px)",
+              md: "315px",
+            },
           },
 
           backgroundColor: "transparent",
@@ -122,40 +129,39 @@ export default function ActionCardCarousel() {
             display: "none",
           },
           scrollbarWidth: "none",
+          msOverflowStyle: "none",
         }}
       >
         {Array.from({ length: 8 }).map((_, i) => (
-          <Box key={i} sx={{ flex: "0 0 auto" }}>
+          <Box key={i}>
             <ExamCard />
           </Box>
         ))}
       </Box>
 
-      {/* LEFT FADE (ultra subtle) */}
       <Box
         sx={{
           pointerEvents: "none",
           position: "absolute",
           top: 0,
           left: 0,
-          width: 32,
+          width: { xs: 18, sm: 24, md: 32 },
           height: "100%",
           background:
-            "linear-gradient(to right, rgba(255,255,255,0.25), rgba(255,255,255,0))",
+            "linear-gradient(to right, rgba(255,255,255,0.22), rgba(255,255,255,0))",
         }}
       />
 
-      {/* RIGHT FADE (ultra subtle) */}
       <Box
         sx={{
           pointerEvents: "none",
           position: "absolute",
           top: 0,
           right: 0,
-          width: 32,
+          width: { xs: 18, sm: 24, md: 32 },
           height: "100%",
           background:
-            "linear-gradient(to left, rgba(255,255,255,0.25), rgba(255,255,255,0))",
+            "linear-gradient(to left, rgba(255,255,255,0.22), rgba(255,255,255,0))",
         }}
       />
     </Box>

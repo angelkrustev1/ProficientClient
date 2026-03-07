@@ -5,16 +5,21 @@ export default function CoursesList() {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: 2,
-        justifyContent: {
+        width: "100%",
+        display: "grid",
+        gridTemplateColumns: {
+          xs: "repeat(1, 1fr)",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(3, 1fr)",
+          lg: "repeat(4, 1fr)",
+        },
+        gap: { xs: 2, sm: 2.5 },
+        justifyItems: {
           xs: "center",
-          sm: "flex-start",
+          sm: "stretch",
         },
       }}
     >
-      {/* Fixed amount of cards */}
       <CourseCard />
       <CourseCard />
       <CourseCard />

@@ -16,12 +16,11 @@ export default function Message() {
       alignItems="flex-start"
       sx={{
         width: "100%",
-        p: 2,
+        p: { xs: 1.5, sm: 2 },
         backgroundColor: "background.paper",
         borderRadius: 1.5,
         border: "1px solid",
         borderColor: "divider",
-
         boxShadow: "0 10px 26px rgba(0, 15, 8, 0.12)",
         flexDirection: "column",
       }}
@@ -61,14 +60,24 @@ export default function Message() {
       </Box>
 
       {/* Content */}
-      <Box sx={{ display: "flex", width: "100%" }}>
-        <ListItemAvatar>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          alignItems: "flex-start",
+        }}
+      >
+        <ListItemAvatar
+          sx={{
+            minWidth: { xs: 44, sm: 48 },
+          }}
+        >
           <Avatar
             sx={{
               bgcolor: "primary.main",
               color: "primary.contrastText",
-              width: 40,
-              height: 40,
+              width: { xs: 36, sm: 40 },
+              height: { xs: 36, sm: 40 },
               fontSize: "0.85rem",
             }}
           >
@@ -76,13 +85,20 @@ export default function Message() {
           </Avatar>
         </ListItemAvatar>
 
-        <Box sx={{ flex: 1, pl: 2 }}>
+        <Box
+          sx={{
+            flex: 1,
+            pl: { xs: 1.5, sm: 2 },
+            minWidth: 0,
+          }}
+        >
           {/* Username */}
           <Typography
             variant="subtitle2"
             sx={{
               fontWeight: 600,
               color: "text.primary",
+              fontSize: { xs: "0.9rem", sm: "0.95rem" },
             }}
           >
             Ali Connors
@@ -95,6 +111,8 @@ export default function Message() {
               mt: 0.5,
               color: "text.primary",
               lineHeight: 1.6,
+              fontSize: { xs: "0.88rem", sm: "0.9rem" },
+              wordBreak: "break-word",
             }}
           >
             Why is the sky blue, and does it change based on location or time of
@@ -108,7 +126,7 @@ export default function Message() {
               display: "flex",
               justifyContent: "flex-end",
               alignItems: "center",
-              mt: 2.5,
+              mt: { xs: 2, sm: 2.5 },
               gap: 0.5,
             }}
           >

@@ -3,15 +3,16 @@ import { Link } from "react-router";
 import useLanguage from "../../hooks/useLanguage";
 
 export default function CourseCard() {
-  let language = useLanguage();
-
+  const language = useLanguage();
   const image = "/Матура.png";
 
   return (
     <Card
       sx={{
-        width: 275,
+        width: { xs: "100%", sm: 260, md: 275 },
+        maxWidth: 275,
         height: 250,
+
         display: "flex",
         flexDirection: "column",
         borderRadius: 0.4,
@@ -71,7 +72,7 @@ export default function CourseCard() {
       <CardActions
         sx={{
           height: "22%",
-          px: 1.5,
+          px: { xs: 1.2, sm: 1.5 },
           py: 1,
           gap: 1,
           display: "flex",
@@ -82,17 +83,17 @@ export default function CourseCard() {
           borderColor: "divider",
         }}
       >
-        {/* VIEW BUTTON */}
+        {/* OPEN BUTTON */}
         <Button
           component={Link}
           to="/courses/:courseId"
           variant="outlined"
           fullWidth
           sx={{
-            height: 34,
+            height: { xs: 32, sm: 34 },
             borderRadius: 0.4,
             textTransform: "none",
-            fontSize: "0.82rem",
+            fontSize: { xs: "0.78rem", sm: "0.82rem" },
             fontWeight: 500,
             letterSpacing: "0.5px",
 
@@ -113,15 +114,15 @@ export default function CourseCard() {
           {language.open}
         </Button>
 
-        {/* START / LEAVE BUTTON */}
+        {/* LEAVE BUTTON */}
         <Button
           variant="contained"
           fullWidth
           sx={{
-            height: 34,
+            height: { xs: 32, sm: 34 },
             borderRadius: 0.4,
             textTransform: "none",
-            fontSize: "0.82rem",
+            fontSize: { xs: "0.78rem", sm: "0.82rem" },
             fontWeight: 600,
             letterSpacing: "0.6px",
 

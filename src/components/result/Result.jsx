@@ -1,10 +1,10 @@
-import { Box, Typography, Button, Divider } from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Questions from "../exam/questions/Questions";
 import useLanguage from "../../hooks/useLanguage";
 
 export default function TestResultPage() {
-  let language = useLanguage();
+  const language = useLanguage();
 
   return (
     <Box
@@ -16,7 +16,8 @@ export default function TestResultPage() {
         borderColor: "divider",
         backgroundColor: "background.paper",
         boxShadow: "0 14px 32px rgba(0, 15, 8, 0.14)",
-        p: 3,
+        px: { xs: 1.5, sm: 2.5, md: 3 },
+        py: { xs: 2, sm: 2.5, md: 3 },
       }}
     >
       {/* Top summary */}
@@ -26,7 +27,8 @@ export default function TestResultPage() {
           border: "1px solid",
           borderColor: "primary.main",
           backgroundColor: "base.light",
-          p: 2.5,
+          px: { xs: 1.5, sm: 2.5 },
+          py: { xs: 2, sm: 2.5 },
           mb: 2,
           overflow: "hidden",
         }}
@@ -42,30 +44,48 @@ export default function TestResultPage() {
           }}
         />
 
-        <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2, pl: 1.5 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", sm: "center" },
+            gap: { xs: 2, sm: 2 },
+            pl: 1.5,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: 1.25, sm: 1.5 },
+              minWidth: 0,
+            }}
+          >
             <Box
               sx={{
-                width: 42,
-                height: 42,
-                borderRadius: 1.2,
+                width: { xs: 38, sm: 42 },
+                height: { xs: 38, sm: 42 },
+                borderRadius: 1,
                 bgcolor: "action.selected",
                 color: "primary.main",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                flexShrink: 0,
               }}
             >
-              <CheckCircleOutlineIcon />
+              <CheckCircleOutlineIcon fontSize="medium" />
             </Box>
 
-            <Box>
+            <Box sx={{ minWidth: 0 }}>
               <Typography
                 sx={{
-                  fontSize: "1.1rem",
+                  fontSize: { xs: "1rem", sm: "1.1rem" },
                   fontWeight: 800,
                   letterSpacing: "0.2px",
                   color: "text.primary",
+                  lineHeight: 1.2,
                 }}
               >
                 {language.testResult}
@@ -74,7 +94,7 @@ export default function TestResultPage() {
               <Typography
                 sx={{
                   mt: 0.5,
-                  fontSize: "0.92rem",
+                  fontSize: { xs: "0.85rem", sm: "0.92rem" },
                   color: "text.secondary",
                 }}
               >
@@ -83,10 +103,16 @@ export default function TestResultPage() {
             </Box>
           </Box>
 
-          <Box sx={{ textAlign: "right" }}>
+          <Box
+            sx={{
+              textAlign: { xs: "left", sm: "right" },
+              width: { xs: "100%", sm: "auto" },
+              pt: { xs: 0.5, sm: 0 },
+            }}
+          >
             <Typography
               sx={{
-                fontSize: "2.05rem",
+                fontSize: { xs: "1.7rem", sm: "2.05rem" },
                 fontWeight: 900,
                 letterSpacing: "0.3px",
                 color: "text.primary",
@@ -98,7 +124,7 @@ export default function TestResultPage() {
             <Typography
               sx={{
                 mt: 0.5,
-                fontSize: "0.95rem",
+                fontSize: { xs: "0.9rem", sm: "0.95rem" },
                 fontWeight: 800,
                 color: "primary.main",
               }}
@@ -113,14 +139,14 @@ export default function TestResultPage() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr 1fr", sm: "1fr 1fr" },
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
           gap: 1.25,
           mb: 2,
         }}
       >
         {[
-          { label: `${language.right}`, value: "39" },
-          { label: `${language.wrong}`, value: "11" },
+          { label: language.right, value: "39" },
+          { label: language.wrong, value: "11" },
         ].map((item) => (
           <Box
             key={item.label}
@@ -128,15 +154,15 @@ export default function TestResultPage() {
               border: "1px solid",
               borderColor: "divider",
               backgroundColor: "background.paper",
-              px: 2,
-              py: 1.6,
-              borderRadius: 1.2,
+              px: { xs: 1.5, sm: 2 },
+              py: { xs: 1.4, sm: 1.6 },
+              borderRadius: 1,
               boxShadow: "0 8px 18px rgba(0, 15, 8, 0.06)",
             }}
           >
             <Typography
               sx={{
-                fontSize: "0.82rem",
+                fontSize: { xs: "0.78rem", sm: "0.82rem" },
                 color: "text.secondary",
                 letterSpacing: "0.2px",
               }}
@@ -146,7 +172,7 @@ export default function TestResultPage() {
             <Typography
               sx={{
                 mt: 0.35,
-                fontSize: "1.15rem",
+                fontSize: { xs: "1.05rem", sm: "1.15rem" },
                 fontWeight: 850,
                 color: "text.primary",
               }}
@@ -165,9 +191,10 @@ export default function TestResultPage() {
           border: "1px solid",
           borderColor: "primary.main",
           backgroundColor: "background.paper",
-          p: 2,
-          maxHeight: 520,
-          overflowY: "auto",
+          px: { xs: 1, sm: 1.5, md: 2 },
+          py: { xs: 1.25, sm: 1.5, md: 2 },
+          maxHeight: { xs: "none", md: 520 },
+          overflowY: { xs: "visible", md: "auto" },
 
           scrollbarWidth: "thin",
           scrollbarColor: "rgba(28, 55, 56, 0.35) transparent",

@@ -12,7 +12,7 @@ import {
   Button,
   Popover,
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
   Divider,
 } from "@mui/material";
@@ -31,17 +31,14 @@ export default function Navigation() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Profile menu state + anchor
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
-  // dropdown state
   const [classAnchorEl, setClassAnchorEl] = useState(null);
   const [subjectAnchorEl, setSubjectAnchorEl] = useState(null);
 
   const classes = useMemo(() => Array.from({ length: 12 }, (_, i) => i + 1), []);
 
-  // Static UI number -> internal value
   const CLASS_VALUES = useMemo(
     () => ({
       1: "1st",
@@ -60,7 +57,6 @@ export default function Navigation() {
     []
   );
 
-  // Language-driven class labels (updates when language updates)
   const CLASS_LABELS = useMemo(
     () => ({
       1: language.firstGrade,
@@ -113,7 +109,6 @@ export default function Navigation() {
     setMenuOpen(false);
   };
 
-  // ---- FILTER UI OPENERS (do nothing off "/") ----
   const openClass = (e) => {
     if (!canUseFilters) return;
     setClassAnchorEl(e.currentTarget);
@@ -135,7 +130,6 @@ export default function Navigation() {
     closeSubject();
   };
 
-  // ---- state changes: only happen on "/" ----
   const toggleValue = (key, value) => {
     if (!canUseFilters) return;
 
@@ -155,25 +149,61 @@ export default function Navigation() {
     resetFilters();
   };
 
+  const navButtonStyles = {
+    color: "inherit",
+    textTransform: "none",
+    fontWeight: 600,
+    borderRadius: 1,
+    px: {
+      xs: 1,
+      md: 1.25,
+    },
+    py: 0.75,
+    minWidth: "fit-content",
+    whiteSpace: "nowrap",
+    fontSize: {
+      xs: "0.9rem",
+      md: "0.95rem",
+    },
+    "&:hover": {
+      backgroundColor: "rgba(255,255,255,0.08)",
+    },
+  };
+
   const popoverStyles = {
-    width: 220,
-    borderRadius: 0.5,
+    width: {
+      xs: 200,
+      sm: 220,
+    },
+    maxWidth: "calc(100vw - 24px)",
+    borderRadius: 0.75,
     backgroundColor: "base.mid",
     color: "base.light",
     boxShadow: "0px 4px 12px rgba(0,0,0,0.3)",
-    maxHeight: "none",
-    overflow: "visible",
+    maxHeight: {
+      xs: 320,
+      sm: 420,
+    },
+    overflowY: "auto",
   };
 
   const listItemStyles = {
-    paddingY: 0.5,
-    paddingX: 4,
+    px: {
+      xs: 2,
+      sm: 2.5,
+    },
+    py: 1,
+    minHeight: 42,
     "&:hover": {
       backgroundColor: "rgba(244, 255, 248, 0.08)",
-      cursor: "pointer",
     },
     "& .MuiListItemText-primary": {
       whiteSpace: "nowrap",
+      fontSize: {
+        xs: "0.92rem",
+        sm: "0.96rem",
+      },
+      fontWeight: 500,
     },
   };
 
@@ -183,12 +213,34 @@ export default function Navigation() {
     <>
       <Box>
         <AppBar position="static">
-          <Toolbar sx={{ minHeight: 80, px: 3 }}>
+          <Toolbar
+            sx={{
+              minHeight: {
+                xs: 72,
+                md: 80,
+              },
+              px: {
+                xs: 1.5,
+                sm: 2,
+                md: 3,
+              },
+              gap: {
+                xs: 1,
+                sm: 1.5,
+              },
+            }}
+          >
             <IconButton
               size="large"
               edge="start"
               color="inherit"
               onClick={drawerOpenHandler}
+              sx={{
+                mr: {
+                  xs: 0.5,
+                  sm: 1,
+                },
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -199,38 +251,126 @@ export default function Navigation() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 flexGrow: 1,
+                minWidth: 0,
+                gap: {
+                  xs: 1,
+                  md: 2,
+                },
               }}
             >
-              <Button component={Link} to="/" variant="text">
+              <Button
+                component={Link}
+                to="/"
+                variant="text"
+                sx={{
+                  minWidth: "fit-content",
+                  p: 0,
+                  borderRadius: 1,
+                }}
+              >
                 <Box
                   component="img"
                   src="/logo.png"
                   alt="Logo"
-                  sx={{ height: 55 }}
+                  sx={{
+                    height: {
+                      xs: 42,
+                      sm: 48,
+                      md: 55,
+                    },
+                    width: "auto",
+                    display: "block",
+                  }}
                 />
               </Button>
 
-              <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                <SearchBar />
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  flexGrow: 1,
+                  minWidth: 0,
+                  gap: {
+                    xs: 0.5,
+                    sm: 0.75,
+                    md: 1,
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    minWidth: 0,
+                    width: {
+                      xs: "100%",
+                      sm: "auto",
+                    },
+                    maxWidth: {
+                      xs: 160,
+                      sm: 220,
+                      md: 280,
+                    },
+                    flexShrink: 1,
+                  }}
+                >
+                  <SearchBar />
+                </Box>
 
-                <Button variant="text" onClick={openClass}>
-                  {language.class}
-                </Button>
+                <Box
+                  sx={{
+                    display: {
+                      xs: "none",
+                      lg: "flex",
+                    },
+                    alignItems: "center",
+                    gap: 0.5,
+                    flexShrink: 0,
+                  }}
+                >
+                  <Button variant="text" onClick={openClass} sx={navButtonStyles}>
+                    {language.class}
+                  </Button>
 
-                <Button variant="text" onClick={openSubject}>
-                  {language.subject}
-                </Button>
+                  <Button variant="text" onClick={openSubject} sx={navButtonStyles}>
+                    {language.subject}
+                  </Button>
 
-                <Button variant="text" onClick={() => toggleType("exams")}>
-                  {language.finals}
-                </Button>
+                  <Button
+                    variant="text"
+                    onClick={() => toggleType("exams")}
+                    sx={navButtonStyles}
+                  >
+                    {language.finals}
+                  </Button>
 
-                <Button variant="text" onClick={() => toggleType("tests")}>
-                  {language.tests}
-                </Button>
+                  <Button
+                    variant="text"
+                    onClick={() => toggleType("tests")}
+                    sx={navButtonStyles}
+                  >
+                    {language.tests}
+                  </Button>
+                </Box>
 
-                <IconButton color="inherit" onClick={menuOpenHander}>
-                  <AccountCircle sx={{ fontSize: 32 }} />
+                <IconButton
+                  color="inherit"
+                  onClick={menuOpenHander}
+                  sx={{
+                    ml: {
+                      xs: 0.25,
+                      sm: 0.5,
+                    },
+                    flexShrink: 0,
+                  }}
+                >
+                  <AccountCircle
+                    sx={{
+                      fontSize: {
+                        xs: 30,
+                        sm: 32,
+                      },
+                    }}
+                  />
                 </IconButton>
 
                 <ProfileMenu
@@ -246,7 +386,6 @@ export default function Navigation() {
 
       <MenuDrawer open={drawerOpen} onClose={drawerCloseHandler} />
 
-      {/* CLASS DROPDOWN */}
       <Popover
         open={Boolean(classAnchorEl) && canUseFilters}
         anchorEl={classAnchorEl}
@@ -261,7 +400,7 @@ export default function Navigation() {
 
             return (
               <Box key={c}>
-                <ListItem
+                <ListItemButton
                   sx={listItemStyles}
                   onClick={() => {
                     toggleValue("class", value);
@@ -269,7 +408,7 @@ export default function Navigation() {
                   }}
                 >
                   <ListItemText primary={CLASS_LABELS[c]} />
-                </ListItem>
+                </ListItemButton>
                 {idx !== classes.length - 1 && <Divider sx={dividerSx} />}
               </Box>
             );
@@ -277,7 +416,6 @@ export default function Navigation() {
         </List>
       </Popover>
 
-      {/* SUBJECT DROPDOWN */}
       <Popover
         open={Boolean(subjectAnchorEl) && canUseFilters}
         anchorEl={subjectAnchorEl}
@@ -289,7 +427,7 @@ export default function Navigation() {
         <List disablePadding>
           {subjects.map((s, idx) => (
             <Box key={s.key}>
-              <ListItem
+              <ListItemButton
                 sx={listItemStyles}
                 onClick={() => {
                   toggleValue("subject", s.key);
@@ -297,7 +435,7 @@ export default function Navigation() {
                 }}
               >
                 <ListItemText primary={s.label} />
-              </ListItem>
+              </ListItemButton>
               {idx !== subjects.length - 1 && <Divider sx={dividerSx} />}
             </Box>
           ))}

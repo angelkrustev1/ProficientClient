@@ -22,28 +22,45 @@ export default function MenuDrawer({ open, onClose }) {
       onClose={onClose}
       ModalProps={{ keepMounted: true }}
       sx={{
-        [`& .MuiDrawer-paper`]: {
-          width: drawerWidth,
+        "& .MuiDrawer-paper": {
+          width: {
+            xs: "82vw",
+            sm: drawerWidth,
+          },
+          maxWidth: drawerWidth,
           boxSizing: "border-box",
         },
       }}
     >
-      <Box sx={{ overflow: "auto", p: 2 }}>
-        
-        {/* HEADER ACTION */}
+      <Box
+        sx={{
+          overflow: "auto",
+          p: {
+            xs: 1.5,
+            sm: 2,
+          },
+        }}
+      >
         <Button
           variant="text"
           component={Link}
-          to='/courses'
+          to="/courses"
           fullWidth
           sx={{
             justifyContent: "flex-start",
+            alignItems: "center",
             fontWeight: 600,
             textTransform: "none",
             letterSpacing: "0.2px",
             color: "primary.main",
-            px: 0,
+            px: 1,
+            py: 1,
             mb: 1,
+            borderRadius: 1,
+            fontSize: {
+              xs: "0.95rem",
+              sm: "1rem",
+            },
 
             "&:hover": {
               bgcolor: "action.hover",
@@ -53,28 +70,51 @@ export default function MenuDrawer({ open, onClose }) {
           Курсове
         </Button>
 
-        <Divider sx={{ mb: 1 }} />
+        <Divider sx={{ mb: 1.5 }} />
 
-        {/* COURSES LIST */}
         <List disablePadding>
           {courses.map((course) => (
             <ListItem key={course} disablePadding>
               <ListItemButton
-              component={Link}
-              to='/courses/:courseId'
+                component={Link}
+                to="/courses/:courseId"
                 sx={{
                   borderRadius: 1,
                   mx: 0.5,
                   mb: 0.5,
+                  px: 1.25,
+                  py: 1,
+                  minHeight: {
+                    xs: 44,
+                    sm: 46,
+                  },
+                  alignItems: "center",
+
+                  "&:hover": {
+                    bgcolor: "action.hover",
+                  },
                 }}
               >
-                <ListItemIcon sx={{ minWidth: 36 }}>
+                <ListItemIcon
+                  sx={{
+                    minWidth: {
+                      xs: 34,
+                      sm: 36,
+                    },
+                  }}
+                >
                   <SchoolIcon color="primary" fontSize="small" />
                 </ListItemIcon>
+
                 <ListItemText
                   primary={course}
                   primaryTypographyProps={{
                     fontWeight: 500,
+                    fontSize: {
+                      xs: "0.95rem",
+                      sm: "1rem",
+                    },
+                    lineHeight: 1.2,
                   }}
                 />
               </ListItemButton>

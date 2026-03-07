@@ -17,11 +17,11 @@ import { CustomThemeContext } from "../../contexts/CustomThemeContext";
 import { LanguageContext } from "../../contexts/LanguageContext";
 
 export default function Settings({ open, onClose }) {
-  let language = useLanguage();
-  let { resetDefaultTheme } = useContext(CustomThemeContext);
-  let { languageResetDefaultHandler } = useContext(LanguageContext);
+  const language = useLanguage();
+  const { resetDefaultTheme } = useContext(CustomThemeContext);
+  const { languageResetDefaultHandler } = useContext(LanguageContext);
 
-  const resetHander = () => {
+  const resetHandler = () => {
     resetDefaultTheme();
     languageResetDefaultHandler();
   };
@@ -29,30 +29,37 @@ export default function Settings({ open, onClose }) {
   return (
     <Backdrop
       open={open}
-      onClick={onClose} // closes only when clicking the backdrop (outside the card)
+      onClick={onClose}
       sx={{
         zIndex: "modal",
         bgcolor: "rgba(0, 0, 0, 0.6)",
+        px: 2,
+        py: { xs: 2, sm: 3 },
       }}
     >
       <Paper
         elevation={6}
-        onClick={(e) => e.stopPropagation()} // prevents clicks inside from closing
+        onClick={(e) => e.stopPropagation()}
         sx={{
           position: "relative",
-          p: 4,
+          width: "100%",
           maxWidth: 420,
-          width: "90%",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          px: { xs: 2.5, sm: 4 },
+          py: { xs: 3, sm: 4 },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 3,
-          bgcolor: "#base.light",
+          gap: { xs: 2.5, sm: 3 },
+          bgcolor: "base.light",
+          borderRadius: 1,
+          boxSizing: "border-box",
         }}
       >
         <IconButton
           onClick={(e) => {
-            e.stopPropagation(); // (not strictly necessary now, but safe)
+            e.stopPropagation();
             onClose();
           }}
           sx={{
@@ -65,7 +72,13 @@ export default function Settings({ open, onClose }) {
           <CloseIcon />
         </IconButton>
 
-        <Avatar sx={{ bgcolor: "base.mid" }}>
+        <Avatar
+          sx={{
+            bgcolor: "base.mid",
+            width: { xs: 44, sm: 48 },
+            height: { xs: 44, sm: 48 },
+          }}
+        >
           <SettingsIcon sx={{ color: "base.soft" }} />
         </Avatar>
 
@@ -74,6 +87,11 @@ export default function Settings({ open, onClose }) {
           component="h1"
           fontWeight={600}
           color="base.hard"
+          textAlign="center"
+          sx={{
+            fontSize: { xs: "1.25rem", sm: "1.5rem" },
+            lineHeight: 1.2,
+          }}
         >
           {language.settings}
         </Typography>
@@ -82,31 +100,41 @@ export default function Settings({ open, onClose }) {
           sx={{
             display: "flex",
             flexDirection: "column",
-            gap: 3,
+            gap: { xs: 2.5, sm: 3 },
             width: "100%",
           }}
         >
           <Box
             sx={{
               display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: { xs: "stretch", sm: "center" },
+              gap: { xs: 2, sm: 2 },
               width: "100%",
             }}
           >
-            <ThemeOptions />
-            <LanguageOptions />
+            <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+              <ThemeOptions />
+            </Box>
+
+            <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+              <LanguageOptions />
+            </Box>
           </Box>
 
           <Button
             variant="contained"
             onClick={(e) => {
               e.stopPropagation();
-              resetHander();
+              resetHandler();
             }}
+            fullWidth
             sx={{
+              minHeight: 44,
               bgcolor: "base.soft",
               color: "base.light",
+              fontWeight: 600,
               "&:hover": {
                 bgcolor: "base.hard",
               },

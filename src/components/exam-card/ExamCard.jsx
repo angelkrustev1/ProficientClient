@@ -3,14 +3,16 @@ import { Link } from "react-router";
 import useLanguage from "../../hooks/useLanguage";
 
 export default function ExamCard() {
-  let language = useLanguage();
+  const language = useLanguage();
   const image = "/Матура.png";
 
   return (
     <Card
       sx={{
-        width: 315,
-        height: 275,
+        width: "100%",
+        maxWidth: { xs: 420, sm: 340, md: 315 },
+        minWidth: 0,
+        height: { xs: 250, sm: 265, md: 275 },
         display: "flex",
         flexDirection: "column",
         borderRadius: 0.4,
@@ -26,7 +28,6 @@ export default function ExamCard() {
         },
       }}
     >
-      {/* IMAGE */}
       <Box
         sx={{
           position: "relative",
@@ -62,31 +63,30 @@ export default function ExamCard() {
         />
       </Box>
 
-      {/* ACTIONS */}
       <CardActions
         sx={{
           height: "22%",
-          px: 1.5,
-          py: 1,
-          gap: 1,
+          px: { xs: 1, sm: 1.25, md: 1.5 },
+          py: { xs: 0.9, sm: 1 },
+          gap: { xs: 0.75, sm: 1 },
           display: "flex",
           alignItems: "center",
           backgroundColor: "base.soft",
         }}
       >
-        {/* VIEW BUTTON */}
         <Button
           component={Link}
           to={`/exams/${1}?mode=view`}
           variant="outlined"
           fullWidth
           sx={{
-            height: 34,
-            borderRadius: 0.4, // rectangular
+            minWidth: 0,
+            height: { xs: 36, sm: 34 },
+            borderRadius: 0.4,
             textTransform: "none",
-            fontSize: "0.82rem",
+            fontSize: { xs: "0.78rem", sm: "0.8rem", md: "0.82rem" },
             fontWeight: 500,
-            letterSpacing: "0.5px",
+            letterSpacing: { xs: "0.3px", sm: "0.5px" },
             color: "primary.main",
             borderColor: "primary.main",
             backgroundColor: "background.paper",
@@ -102,19 +102,19 @@ export default function ExamCard() {
           {language.view}
         </Button>
 
-        {/* START BUTTON */}
         <Button
           component={Link}
           to={`/exams/${1}?mode=active`}
           variant="contained"
           fullWidth
           sx={{
-            height: 34,
-            borderRadius: 0.4, // rectangular
+            minWidth: 0,
+            height: { xs: 36, sm: 34 },
+            borderRadius: 0.4,
             textTransform: "none",
-            fontSize: "0.82rem",
+            fontSize: { xs: "0.78rem", sm: "0.8rem", md: "0.82rem" },
             fontWeight: 600,
-            letterSpacing: "0.6px",
+            letterSpacing: { xs: "0.35px", sm: "0.6px" },
             boxShadow: "0px 3px 8px rgba(0, 15, 8, 0.35)",
             backgroundColor: "primary.main",
             color: "primary.contrastText",

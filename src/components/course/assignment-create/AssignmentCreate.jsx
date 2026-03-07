@@ -14,7 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import useLanguage from "../../../hooks/useLanguage";
 
 export default function AssignmentCreate({ open, onClose }) {
-  let language = useLanguage();
+  const language = useLanguage();
 
   return (
     <Backdrop
@@ -23,6 +23,8 @@ export default function AssignmentCreate({ open, onClose }) {
       sx={{
         zIndex: "modal",
         bgcolor: "rgba(0, 0, 0, 0.6)",
+        px: { xs: 1.5, sm: 2 },
+        py: { xs: 2, sm: 3 },
       }}
     >
       <Box
@@ -30,23 +32,27 @@ export default function AssignmentCreate({ open, onClose }) {
         sx={{
           width: "100%",
           maxWidth: 420,
+          maxHeight: "100%",
+          display: "flex",
         }}
       >
         <Paper
           elevation={12}
           sx={{
             position: "relative",
-            p: 4,
+            width: "100%",
+            p: { xs: 2, sm: 3, md: 4 },
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 2,
+            gap: { xs: 1.5, sm: 2 },
             bgcolor: "background.paper",
             color: "text.primary",
-            borderRadius: 1.6,
+            borderRadius: { xs: 1.2, sm: 1.6 },
+            overflowY: "auto",
+            boxShadow: "0 18px 40px rgba(0, 0, 0, 0.22)",
           }}
         >
-          {/* CLOSE */}
           <IconButton
             size="small"
             onClick={onClose}
@@ -60,49 +66,51 @@ export default function AssignmentCreate({ open, onClose }) {
               },
             }}
           >
-            <CloseIcon />
+            <CloseIcon fontSize="small" />
           </IconButton>
 
-          {/* ICON */}
           <Avatar
             sx={{
+              width: { xs: 42, sm: 48 },
+              height: { xs: 42, sm: 48 },
               bgcolor: "action.selected",
               color: "primary.main",
             }}
           >
-            <AssignmentIcon />
+            <AssignmentIcon sx={{ fontSize: { xs: 22, sm: 24 } }} />
           </Avatar>
 
-          {/* TITLE */}
           <Typography
             variant="h5"
             sx={{
               fontWeight: 600,
               letterSpacing: "0.3px",
+              fontSize: { xs: "1.15rem", sm: "1.35rem", md: "1.5rem" },
+              textAlign: "center",
+              lineHeight: 1.3,
+              px: 2,
             }}
           >
             {language.createMaterial}
           </Typography>
 
-          {/* FORM */}
           <Box
             component="form"
             sx={{
               width: "100%",
               display: "flex",
               flexDirection: "column",
-              gap: 2,
-              mt: 1,
+              gap: { xs: 1.5, sm: 2 },
+              mt: 0.5,
             }}
           >
-            {/* Title */}
             <TextField
               label={language.title}
               fullWidth
               required
+              size="small"
             />
 
-            {/* Description */}
             <TextField
               label={language.description}
               fullWidth
@@ -111,7 +119,6 @@ export default function AssignmentCreate({ open, onClose }) {
               minRows={3}
             />
 
-            {/* File upload (optional) */}
             <Button
               variant="outlined"
               startIcon={<AttachFileIcon />}
@@ -120,20 +127,33 @@ export default function AssignmentCreate({ open, onClose }) {
                 textTransform: "none",
                 fontWeight: 500,
                 color: "text.secondary",
+                borderColor: "divider",
+                py: 1.15,
+                px: 1.5,
+                borderRadius: 1.1,
+                "&:hover": {
+                  borderColor: "primary.main",
+                  backgroundColor: "action.hover",
+                },
               }}
             >
               {language.addFiles}
             </Button>
 
-            {/* Submit */}
             <Button
               type="submit"
               variant="contained"
               fullWidth
               sx={{
-                mt: 1,
+                mt: 0.5,
                 textTransform: "none",
                 fontWeight: 600,
+                py: 1.2,
+                borderRadius: 1.1,
+                boxShadow: "0 8px 22px rgba(28, 55, 56, 0.35)",
+                "&:hover": {
+                  boxShadow: "0 10px 28px rgba(28, 55, 56, 0.42)",
+                },
               }}
             >
               {language.create}

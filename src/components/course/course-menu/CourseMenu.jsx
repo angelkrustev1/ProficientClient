@@ -8,7 +8,7 @@ import { useState } from "react";
 import useLanguage from "../../../hooks/useLanguage";
 
 export default function CourseMenu() {
-  let language = useLanguage();
+  const language = useLanguage();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -20,12 +20,14 @@ export default function CourseMenu() {
     <Box
       sx={{
         zIndex: 10,
+        width: "fit-content",
+        maxWidth: "100%",
       }}
     >
       <Button
         id="filter-button"
         variant="text"
-        startIcon={<FilterListIcon />}
+        startIcon={<FilterListIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         aria-controls={open ? "filter-menu" : undefined}
@@ -33,6 +35,16 @@ export default function CourseMenu() {
         sx={{
           textTransform: "none",
           color: "primary.main",
+          fontWeight: 600,
+          fontSize: { xs: "0.9rem", sm: "0.95rem" },
+          px: { xs: 1, sm: 1.25 },
+          py: 0.75,
+          minWidth: 0,
+          borderRadius: 1.2,
+          whiteSpace: "nowrap",
+          "&:hover": {
+            backgroundColor: "action.hover",
+          },
         }}
       >
         {language.filters}
@@ -44,26 +56,60 @@ export default function CourseMenu() {
         open={open}
         onClose={handleClose}
         slots={{ transition: Fade }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
         PaperProps={{
           elevation: 3,
           sx: {
+            mt: 0.75,
             borderRadius: 1.4,
-            minWidth: 180,
+            minWidth: { xs: 160, sm: 180 },
+            border: "1px solid",
+            borderColor: "divider",
+            boxShadow: "0px 10px 24px rgba(0, 0, 0, 0.14)",
+            overflow: "hidden",
+          },
+        }}
+        MenuListProps={{
+          sx: {
+            py: 0.5,
           },
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={handleClose}
+          sx={{
+            gap: 1,
+            py: 1,
+            px: 1.5,
+            fontSize: { xs: "0.9rem", sm: "0.95rem" },
+          }}
+        >
           <AssignmentIcon
             fontSize="small"
-            sx={{ mr: 1, color: "primary.main" }}
+            sx={{ color: "primary.main", flexShrink: 0 }}
           />
           {language.assignments}
         </MenuItem>
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={handleClose}
+          sx={{
+            gap: 1,
+            py: 1,
+            px: 1.5,
+            fontSize: { xs: "0.9rem", sm: "0.95rem" },
+          }}
+        >
           <MenuBookIcon
             fontSize="small"
-            sx={{ mr: 1, color: "primary.main" }}
+            sx={{ color: "primary.main", flexShrink: 0 }}
           />
           {language.materials}
         </MenuItem>

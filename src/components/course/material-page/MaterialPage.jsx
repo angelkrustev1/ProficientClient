@@ -5,7 +5,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import useLanguage from "../../../hooks/useLanguage";
 
 export default function MaterialPage() {
-  let language = useLanguage()
+  const language = useLanguage();
 
   return (
     <Box
@@ -15,8 +15,8 @@ export default function MaterialPage() {
         mx: "auto",
         backgroundColor: "background.default",
         flexGrow: 1,
-        px: 7,
-        py: 3,
+        px: { xs: 2, sm: 3, md: 5, lg: 7 },
+        py: { xs: 2, sm: 2.5, md: 3 },
         border: "1px solid",
         borderColor: "divider",
         boxShadow: "0px 10px 24px rgba(0, 0, 0, 0.14)",
@@ -30,15 +30,16 @@ export default function MaterialPage() {
           display: "flex",
           flexDirection: "column",
           gap: 1,
-          pb: 3,
+          pb: { xs: 2.5, md: 3 },
         }}
       >
         <Typography
           sx={{
-            fontSize: "1.35rem",
+            fontSize: { xs: "1.12rem", sm: "1.22rem", md: "1.35rem" },
             fontWeight: 750,
             letterSpacing: "0.2px",
             color: "text.primary",
+            lineHeight: 1.3,
           }}
         >
           Title
@@ -48,8 +49,8 @@ export default function MaterialPage() {
           sx={{
             maxWidth: 900,
             color: "text.secondary",
-            fontSize: "0.98rem",
-            lineHeight: 1.8,
+            fontSize: { xs: "0.92rem", sm: "0.96rem", md: "0.98rem" },
+            lineHeight: { xs: 1.7, md: 1.8 },
           }}
         >
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat non
@@ -59,20 +60,19 @@ export default function MaterialPage() {
         </Typography>
       </Box>
 
-      {/* Spacer to push files section visually to bottom */}
-      <Box sx={{ height: 24 }} />
+      <Box sx={{ height: { xs: 12, sm: 18, md: 24 } }} />
 
-      {/* Files section (BOTTOM) */}
+      {/* Files section */}
       <Box
         sx={{
-          pt: 3,
+          pt: { xs: 2.5, md: 3 },
           borderTop: "1px solid",
           borderColor: "divider",
         }}
       >
         <Typography
           sx={{
-            fontSize: "0.95rem",
+            fontSize: { xs: "0.9rem", md: "0.95rem" },
             fontWeight: 700,
             letterSpacing: "0.15px",
             color: "text.primary",
@@ -82,7 +82,6 @@ export default function MaterialPage() {
           {language.files}
         </Typography>
 
-        {/* File list */}
         <Box
           sx={{
             display: "flex",
@@ -90,27 +89,36 @@ export default function MaterialPage() {
             gap: 1,
           }}
         >
-          {/* File row */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1.5,
-              p: 1.5,
+              gap: { xs: 1.25, sm: 1.5 },
+              p: { xs: 1.25, sm: 1.5 },
               borderRadius: 1.2,
               border: "1px solid",
               borderColor: "divider",
               backgroundColor: "background.paper",
               boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
+              minWidth: 0,
             }}
           >
-            <PictureAsPdfIcon sx={{ color: "primary.main" }} />
-            <Box sx={{ flexGrow: 1 }}>
+            <PictureAsPdfIcon
+              sx={{
+                color: "primary.main",
+                fontSize: { xs: 22, sm: 24 },
+                flexShrink: 0,
+              }}
+            />
+            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
               <Typography
                 sx={{
-                  fontSize: "0.92rem",
+                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
                   fontWeight: 600,
                   color: "text.primary",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
                 lecture-notes.pdf
@@ -126,27 +134,36 @@ export default function MaterialPage() {
             </Box>
           </Box>
 
-          {/* File row */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1.5,
-              p: 1.5,
+              gap: { xs: 1.25, sm: 1.5 },
+              p: { xs: 1.25, sm: 1.5 },
               borderRadius: 1.2,
               border: "1px solid",
               borderColor: "divider",
               backgroundColor: "background.paper",
               boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
+              minWidth: 0,
             }}
           >
-            <DescriptionIcon sx={{ color: "primary.main" }} />
-            <Box sx={{ flexGrow: 1 }}>
+            <DescriptionIcon
+              sx={{
+                color: "primary.main",
+                fontSize: { xs: 22, sm: 24 },
+                flexShrink: 0,
+              }}
+            />
+            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
               <Typography
                 sx={{
-                  fontSize: "0.92rem",
+                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
                   fontWeight: 600,
                   color: "text.primary",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
                 assignment-instructions.docx
@@ -162,27 +179,36 @@ export default function MaterialPage() {
             </Box>
           </Box>
 
-          {/* File row */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1.5,
-              p: 1.5,
+              gap: { xs: 1.25, sm: 1.5 },
+              p: { xs: 1.25, sm: 1.5 },
               borderRadius: 1.2,
               border: "1px solid",
               borderColor: "divider",
               backgroundColor: "background.paper",
               boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
+              minWidth: 0,
             }}
           >
-            <InsertDriveFileIcon sx={{ color: "primary.main" }} />
-            <Box sx={{ flexGrow: 1 }}>
+            <InsertDriveFileIcon
+              sx={{
+                color: "primary.main",
+                fontSize: { xs: 22, sm: 24 },
+                flexShrink: 0,
+              }}
+            />
+            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
               <Typography
                 sx={{
-                  fontSize: "0.92rem",
+                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
                   fontWeight: 600,
                   color: "text.primary",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
                 references.zip

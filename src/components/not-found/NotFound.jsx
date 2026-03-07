@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import SearchOffIcon from '@mui/icons-material/SearchOff';
+import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 export default function NotFound() {
   return (
@@ -8,14 +8,17 @@ export default function NotFound() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 2,
+        justifyContent: "center",
+        textAlign: "center",
+        gap: { xs: 1.5, sm: 2 },
         flexGrow: 1,
-        mt: 15,
+        mt: { xs: 10, sm: 14, md: 15 },
+        px: 2,
       }}
     >
       <SearchOffIcon
         sx={{
-          fontSize: 64,
+          fontSize: { xs: 52, sm: 64 },
           color: "primary.main",
           opacity: 0.85,
         }}
@@ -23,13 +26,13 @@ export default function NotFound() {
 
       <Typography
         variant="h3"
-        align="center"
         gutterBottom
         sx={{
-          fontSize: "2rem",
+          fontSize: { xs: "1.6rem", sm: "2rem" },
           fontWeight: 600,
           color: "primary.main",
           letterSpacing: "0.03em",
+          lineHeight: 1.2,
           textShadow: "1px 1px 3px rgba(28, 55, 56, 0.2)",
         }}
       >

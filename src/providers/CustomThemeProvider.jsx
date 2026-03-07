@@ -4,7 +4,6 @@ import themes from "../themes/themes";
 import usePersistedState from "../hooks/usePersistedState";
 
 export default function CustomThemeProvider({ children }) {
-  // store only "light" / "dark"
   const [themeName, setThemeName] = usePersistedState("themeName", "light");
 
   const themeOptions = themes[themeName] ?? themes.light;

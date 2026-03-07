@@ -5,24 +5,38 @@ import MessageForm from "./message-form/MessageForm";
 
 export default function Chat() {
   return (
-    <Box>
+    <Box
+      sx={{
+        width: "100%",
+        minWidth: 0,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           justifyContent: "flex-end",
-          mt: 1,
-          mb: 12,
+          mt: { xs: 0.5, sm: 1 },
+          mb: { xs: 4, sm: 6, md: 8, lg: 12 },
         }}
       >
         <ChatMenu />
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: 'column', gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: { xs: 1.5, sm: 2 },
+          minWidth: 0,
+        }}
+      >
         <Message />
         <Message />
       </Box>
 
-      <MessageForm />
+      <Box sx={{ mt: { xs: 2, sm: 2.5, md: 3 } }}>
+        <MessageForm />
+      </Box>
     </Box>
   );
 }
