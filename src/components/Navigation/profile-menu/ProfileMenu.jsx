@@ -1,4 +1,3 @@
-// ProfileMenu.jsx
 import {
   Backdrop,
   List,
@@ -8,6 +7,7 @@ import {
   Popover,
 } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
@@ -17,12 +17,16 @@ import CourseJoin from "../../course-join/CourseJoin";
 import CourseCreate from "../../course-create/CourseCreate";
 import Settings from "../../settings/Settings";
 import useLanguage from "../../../hooks/useLanguage";
+import useAuth from "../../../hooks/useAuth";
 
 export default function ProfileMenu({ open, anchorEl, onClose }) {
   const [joinOpen, setJoinOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [settingsOpen, settingsSetOpen] = useState(false);
+
   const language = useLanguage();
+  const { userLogoutHandler } = useAuth();
+  const navigate = useNavigate();
 
   const joinOpenHandler = () => {
     setJoinOpen(true);
@@ -44,6 +48,12 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
   };
 
   const settingsCloseHandler = () => settingsSetOpen(false);
+
+  const logoutHandler = async () => {
+    await userLogoutHandler();
+    onClose();
+    navigate("/");
+  };
 
   const menuItemStyles = {
     px: {
@@ -173,7 +183,7 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
             />
           </ListItemButton>
 
-          <ListItemButton onClick={onClose} sx={menuItemStyles}>
+          <ListItemButton onClick={logoutHandler} sx={menuItemStyles}>
             <ListItemIcon
               sx={{
                 color: "base.light",

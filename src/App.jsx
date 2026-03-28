@@ -1,52 +1,58 @@
-import { Box, CssBaseline } from "@mui/material";
-import Navigation from "./components/Navigation/Navigation";
-import Footer from "./components/footer/Footer";
-import Home from "./components/home/Home";
-import CoursesPage from "./components/courses-page/CoursesPage";
-import { Route, Routes } from "react-router";
-import MaterialPage from "./components/course/material-page/MaterialPage";
-import AssignmentPage from "./components/assignment-page/AssignmentPage";
-import CoursePage from "./components/course-page/CoursePage";
-import Result from "./components/result/Result";
-import Exam from "./components/exam/Exam";
-import FilterProvider from "./providers/FilterProvider";
-import NotFound from "./components/not-found/NotFound";
+import { Box, CssBaseline } from '@mui/material';
+import { Route, Routes } from 'react-router';
+import Navigation from './components/Navigation/Navigation';
+import Footer from './components/footer/Footer';
+import Home from './components/home/Home';
+import CoursesPage from './components/courses-page/CoursesPage';
+import MaterialPage from './components/course/material-page/MaterialPage';
+import AssignmentPage from './components/assignment-page/AssignmentPage';
+import CoursePage from './components/course-page/CoursePage';
+import Result from './components/result/Result';
+import Exam from './components/exam/Exam';
+import NotFound from './components/not-found/NotFound';
+import UserProvider from './providers/UserProvider';
+import AuthGuard from './guards/authGuard';
 
 function App() {
   return (
     <>
       <CssBaseline />
-      <FilterProvider>
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            flexDirection: "column",
-            minHeight: "100vh",
-            bgcolor: "background.default",
-          }}
-        >
-          <Navigation />
-          <Routes>
-            <Route index element={<Home />} />
-            <Route path="/exams/:examId" element={<Exam />} />
-            <Route path="/exams/:examId/result" element={<Result />} />
-            <Route path="/courses" element={<CoursesPage />} />
-            <Route path="/courses/:courseId" element={<CoursePage />} />
-            <Route
-              path="/courses/:courseId/materials/:materialId"
-              element={<MaterialPage />}
-            />
-            <Route
-              path="/courses/:courseId/assignments/:assignmentId"
-              element={<AssignmentPage />}
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+      <UserProvider>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              flexDirection: 'column',
+              minHeight: '100vh',
+              bgcolor: 'background.default',
+            }}
+          >
+            <Navigation />
 
-          <Footer />
-        </Box>
-      </FilterProvider>
+            <Routes>
+              {/* <Route index element={<Home />} /> */}
+              <Route index element={<CoursesPage />} />
+
+              <Route element={<AuthGuard />}>
+                <Route path="/exams/:examId" element={<Exam />} />
+                <Route path="/exams/:examId/result" element={<Result />} />
+                <Route path="/courses/:courseId" element={<CoursePage />} />
+                <Route
+                  path="/courses/:courseId/materials/:materialId"
+                  element={<MaterialPage />}
+                />
+                <Route
+                  path="/courses/:courseId/assignments/:assignmentId"
+                  element={<AssignmentPage />}
+                />
+              </Route>
+
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+
+            <Footer />
+          </Box>
+      </UserProvider>
     </>
   );
 }

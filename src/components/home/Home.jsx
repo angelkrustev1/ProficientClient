@@ -1,8 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useContext } from "react";
 import ActionCardCarousel from "../action-card-carousel/ActionCardCarousel";
-import Filter from "../filter/Filter";
-import { FilterContext } from "../../contexts/FilterContext";
 import useLanguage from "../../hooks/useLanguage";
 
 const sectionTitleStyles = {
@@ -38,11 +35,6 @@ const sectionContainerStyles = {
 
 export default function Home() {
   const language = useLanguage();
-  const { filters } = useContext(FilterContext);
-
-  const hasActiveFilters = Object.values(filters).some(
-    (value) => value !== null
-  );
 
   return (
     <Box
@@ -64,22 +56,7 @@ export default function Home() {
         },
       }}
     >
-      {hasActiveFilters && (
-        <Box
-          sx={{
-            width: "100%",
-            maxWidth: "1400px",
-            px: {
-              xs: 1.5,
-              sm: 2,
-              md: 3,
-            },
-          }}
-        >
-          <Filter />
-        </Box>
-      )}
-
+      
       <Box sx={sectionContainerStyles}>
         <Typography variant="h3" align="center" gutterBottom sx={sectionTitleStyles}>
           {language.finals}

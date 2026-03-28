@@ -15,29 +15,31 @@ export default function NoAuth() {
   const registerCloseHandler = () => registerSetOpen(false);
 
   const actionButtonStyles = {
-    color: "base.light",
+    color: "#fff",
     backgroundColor: "rgba(0, 0, 0, 0.25)",
     textTransform: "none",
     fontWeight: 600,
     borderRadius: 1,
-    minWidth: {
-      xs: "auto",
-      sm: 96,
-    },
+    minWidth: 0,
     px: {
       xs: 1.25,
-      sm: 1.75,
+      sm: 2,
     },
     py: {
-      xs: 0.75,
-      sm: 0.9,
+      xs: 0.9,
+      sm: 1.1,
     },
     fontSize: {
-      xs: "0.9rem",
-      sm: "0.95rem",
+      xs: "0.85rem",
+      sm: "1rem",
+    },
+    minHeight: {
+      xs: 40,
+      sm: 44,
     },
     lineHeight: 1.2,
     whiteSpace: "nowrap",
+    flexShrink: 1,
     "&:hover": {
       backgroundColor: "rgba(0, 0, 0, 0.35)",
     },
@@ -53,7 +55,9 @@ export default function NoAuth() {
         },
         alignItems: "center",
         justifyContent: "center",
-        flexWrap: "wrap",
+        flexWrap: "nowrap",
+        width: "auto",
+        maxWidth: "100%",
       }}
     >
       <Button onClick={loginOpenHandler} variant="text" sx={actionButtonStyles}>

@@ -5,42 +5,42 @@ const theme = createTheme({
     mode: 'dark',
 
     base: {
-      dark: '#0E0C12',   // app background (near-black, neutral-violet)
-      light: '#14111B',  // surfaces (subtle lift, very low chroma)
-      hard: '#D6D1E0',   // primary text (tamed, no glare)
-      mid: '#26212F',    // borders / outlines (quiet)
-      soft: '#9D97AA',   // secondary text (calm, readable)
-      accent: '#6F5A8C', // muted purple accent (smoky)
+      dark: '#0B0A0F',   // app background
+      light: '#181520',  // elevated surface
+      hard: '#F3EFFA',   // strong text
+      mid: '#3A3348',    // border / structure
+      soft: '#211C2B',   // card surface (important for your MaterialCard)
+      accent: '#9A7CCF', // accent violet
     },
 
     primary: {
-      main: '#62537E',        // smoky violet (identity, very restrained)
-      contrastText: '#0E0C12',
+      main: '#9A7CCF',
+      contrastText: '#F7F4FC',
     },
 
     secondary: {
-      main: '#6F5A8C',
-      contrastText: '#D6D1E0',
+      main: '#7E6AA3',
+      contrastText: '#F3EFFA',
     },
 
     background: {
-      default: '#0E0C12',
-      paper: '#14111B',
+      default: '#0B0A0F',
+      paper: '#181520',
     },
 
     text: {
-      primary: '#D6D1E0',
-      secondary: '#ABA6B7',
-      disabled: 'rgba(214, 209, 224, 0.34)',
+      primary: '#F3EFFA',
+      secondary: '#B9B1C9',
+      disabled: 'rgba(243, 239, 250, 0.36)',
     },
 
-    divider: 'rgba(171, 166, 183, 0.13)',
+    divider: 'rgba(185, 177, 201, 0.16)',
 
     action: {
-      hover: 'rgba(98, 83, 126, 0.08)',
-      selected: 'rgba(98, 83, 126, 0.13)',
-      disabled: 'rgba(214, 209, 224, 0.24)',
-      disabledBackground: 'rgba(171, 166, 183, 0.09)',
+      hover: 'rgba(154, 124, 207, 0.10)',
+      selected: 'rgba(154, 124, 207, 0.16)',
+      disabled: 'rgba(243, 239, 250, 0.26)',
+      disabledBackground: 'rgba(185, 177, 201, 0.08)',
     },
   },
 
@@ -56,12 +56,12 @@ const theme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          color: '#D6D1E0',
+          color: '#F3EFFA',
           '&.Mui-selected': {
-            backgroundColor: 'rgba(98, 83, 126, 0.13)',
+            backgroundColor: 'rgba(154, 124, 207, 0.16)',
           },
           '&:hover': {
-            backgroundColor: 'rgba(98, 83, 126, 0.08)',
+            backgroundColor: 'rgba(154, 124, 207, 0.10)',
           },
         },
       },
@@ -70,11 +70,11 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         text: {
-          color: '#D6D1E0',
+          color: '#F3EFFA',
           letterSpacing: '0.5px',
           fontWeight: 500,
           '&:hover': {
-            backgroundColor: 'rgba(98, 83, 126, 0.10)',
+            backgroundColor: 'rgba(154, 124, 207, 0.10)',
           },
         },
       },
