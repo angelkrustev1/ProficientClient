@@ -1,16 +1,44 @@
-import { Box, Tabs, Tab } from "@mui/material";
+import { Alert, Box, CircularProgress, Tab, Tabs, Typography } from "@mui/material";
 import { useState } from "react";
+import { useParams } from "react-router";
 import Course from "../course/Course";
 import Chat from "../chat/Chat";
 import useLanguage from "../../hooks/useLanguage";
+import useCourseDetails from "../../hooks/useCourseDetails";
 
-export default function AssignmentPage() {
+export default function CoursePage() {
   const language = useLanguage();
+  const { courseId } = useParams();
+  const { course, loading, error } = useCourseDetails(courseId);
   const [tabValue, setTabValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", px: 2, py: 4 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
+
+  if (!course) {
+    return (
+      <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", px: 2, py: 4 }}>
+        <Alert severity="warning">Course not found.</Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -30,6 +58,30 @@ export default function AssignmentPage() {
         overflow: "hidden",
       }}
     >
+      <Box sx={{ mb: 2 }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: "text.primary",
+            fontSize: { xs: "1.4rem", sm: "1.8rem" },
+            mb: 0.5,
+          }}
+        >
+          {course.title}
+        </Typography>
+
+        <Typography
+          variant="body2"
+          sx={{
+            color: "text.secondary",
+            fontWeight: 500,
+          }}
+        >
+          {(language.joinCode || "Join code")}: {course.join_code}
+        </Typography>
+      </Box>
+
       <Box
         sx={{
           borderBottom: "1px solid",
@@ -94,7 +146,7 @@ export default function AssignmentPage() {
         </Tabs>
       </Box>
 
-      {tabValue === 0 && <Course />}
+      {tabValue === 0 && <Course course={course} />}
       {tabValue === 1 && <Chat />}
     </Box>
   );

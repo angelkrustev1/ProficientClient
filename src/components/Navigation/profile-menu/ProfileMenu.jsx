@@ -108,56 +108,6 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
         }}
       >
         <List disablePadding>
-          <ListItemButton onClick={joinOpenHandler} sx={menuItemStyles}>
-            <ListItemIcon
-              sx={{
-                color: "base.light",
-                minWidth: {
-                  xs: 34,
-                  sm: 36,
-                },
-              }}
-            >
-              <MeetingRoomIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText
-              primary={language.joinCourse}
-              primaryTypographyProps={{
-                fontSize: {
-                  xs: "0.95rem",
-                  sm: "1rem",
-                },
-                fontWeight: 500,
-                lineHeight: 1.2,
-              }}
-            />
-          </ListItemButton>
-
-          <ListItemButton onClick={createOpenHandler} sx={menuItemStyles}>
-            <ListItemIcon
-              sx={{
-                color: "base.light",
-                minWidth: {
-                  xs: 34,
-                  sm: 36,
-                },
-              }}
-            >
-              <GroupAddIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText
-              primary={language.createCourse}
-              primaryTypographyProps={{
-                fontSize: {
-                  xs: "0.95rem",
-                  sm: "1rem",
-                },
-                fontWeight: 500,
-                lineHeight: 1.2,
-              }}
-            />
-          </ListItemButton>
-
           <ListItemButton onClick={settingsOpenHandler} sx={menuItemStyles}>
             <ListItemIcon
               sx={{

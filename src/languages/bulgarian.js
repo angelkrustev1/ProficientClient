@@ -8,6 +8,8 @@ const language = {
   addDropFiles: "Добави / пусни файлове",
   send: "Предай",
   start: "Започни",
+  delete: 'Изтрий',
+
 
   firstGrade: "1-ви клас",
   secondGrade: "2-ри клас",

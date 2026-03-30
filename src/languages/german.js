@@ -10,6 +10,7 @@ const language = {
   addDropFiles: "Dateien hinzufügen / entfernen",
   send: "Senden",
   start: "Starten",
+  delete: 'Löschen',
 
   firstGrade: "1. Klasse",
   secondGrade: "2. Klasse",

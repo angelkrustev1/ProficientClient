@@ -23,6 +23,10 @@ function removeAuth() {
   localStorage.removeItem(AUTH_KEY);
 }
 
+function isFormData(value) {
+  return value instanceof FormData;
+}
+
 async function tryRefreshToken() {
   const auth = getAuth();
 
@@ -65,9 +69,10 @@ async function tryRefreshToken() {
 
 async function request(method, url, data, options = {}, retry = true) {
   const auth = getAuth();
+  const formDataRequest = isFormData(data);
 
   const headers = {
-    ...(data ? { "Content-Type": "application/json" } : {}),
+    ...(data && !formDataRequest ? { "Content-Type": "application/json" } : {}),
     ...(auth?.accessToken ? { Authorization: `Bearer ${auth.accessToken}` } : {}),
     ...(options.headers || {}),
   };
@@ -78,8 +83,8 @@ async function request(method, url, data, options = {}, retry = true) {
     headers,
   };
 
-  if (data) {
-    requestOptions.body = JSON.stringify(data);
+  if (data !== undefined) {
+    requestOptions.body = formDataRequest ? data : JSON.stringify(data);
   }
 
   const response = await fetch(`${BASE_URL}${url}`, requestOptions);
@@ -102,7 +107,7 @@ async function request(method, url, data, options = {}, retry = true) {
       const newAccessToken = await tryRefreshToken();
 
       const retryHeaders = {
-        ...(data ? { "Content-Type": "application/json" } : {}),
+        ...(data && !formDataRequest ? { "Content-Type": "application/json" } : {}),
         Authorization: `Bearer ${newAccessToken}`,
         ...(options.headers || {}),
       };
@@ -113,8 +118,8 @@ async function request(method, url, data, options = {}, retry = true) {
         headers: retryHeaders,
       };
 
-      if (data) {
-        retryOptions.body = JSON.stringify(data);
+      if (data !== undefined) {
+        retryOptions.body = formDataRequest ? data : JSON.stringify(data);
       }
 
       const retryResponse = await fetch(`${BASE_URL}${url}`, retryOptions);

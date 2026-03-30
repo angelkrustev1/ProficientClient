@@ -1,10 +1,45 @@
-import { Box, Container, Typography } from "@mui/material";
-import CoursesList from "./courses-list/CoursesList";
+import { useState } from "react";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import LoginIcon from "@mui/icons-material/Login";
+import CourseCard from "../course-card/CourseCard";
+import CourseCreate from "../course-create/CourseCreate";
+import CourseJoin from "../course-join/CourseJoin";
 import NoCourses from "./no-courses/NoCourses";
 import useLanguage from "../../hooks/useLanguage";
+import useCourses from "../../hooks/useCourses";
 
 export default function CoursesPage() {
   const language = useLanguage();
+  const {
+    courses,
+    loading,
+    actionLoading,
+    error,
+    createCourse,
+    joinCourse,
+    leaveCourse,
+    deleteCourse,
+  } = useCourses();
+
+  const [createOpen, setCreateOpen] = useState(false);
+  const [joinOpen, setJoinOpen] = useState(false);
+
+  const leaveHandler = async (courseId) => {
+    await leaveCourse(courseId);
+  };
+
+  const deleteHandler = async (courseId) => {
+    await deleteCourse(courseId);
+  };
 
   return (
     <Box
@@ -37,7 +72,84 @@ export default function CoursesPage() {
           {language.courses}
         </Typography>
 
-        {false ? <CoursesList /> : <NoCourses />}
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          justifyContent="center"
+          sx={{ mb: 4 }}
+        >
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setCreateOpen(true)}
+          >
+            {language.createCourse || "Create course"}
+          </Button>
+
+          <Button
+            variant="outlined"
+            startIcon={<LoginIcon />}
+            onClick={() => setJoinOpen(true)}
+          >
+            {language.joinCourse || "Join course"}
+          </Button>
+        </Stack>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error}
+          </Alert>
+        )}
+
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
+            <CircularProgress />
+          </Box>
+        ) : courses.length > 0 ? (
+          <Box
+            sx={{
+              width: "100%",
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(4, 1fr)",
+              },
+              gap: { xs: 2, sm: 2.5 },
+              justifyItems: {
+                xs: "center",
+                sm: "stretch",
+              },
+            }}
+          >
+            {courses.map((course) => (
+              <CourseCard
+                key={course.id}
+                course={course}
+                onLeave={leaveHandler}
+                onDelete={deleteHandler}
+                loading={actionLoading}
+              />
+            ))}
+          </Box>
+        ) : (
+          <NoCourses />
+        )}
+
+        <CourseCreate
+          open={createOpen}
+          onClose={() => setCreateOpen(false)}
+          onCreate={createCourse}
+          loading={actionLoading}
+        />
+
+        <CourseJoin
+          open={joinOpen}
+          onClose={() => setJoinOpen(false)}
+          onJoin={joinCourse}
+          loading={actionLoading}
+        />
       </Container>
     </Box>
   );

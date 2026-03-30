@@ -7,13 +7,18 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import SchoolIcon from "@mui/icons-material/School";
 import { Link } from "react-router";
+import useCourses from "../../hooks/useCourses";
+import useAuth from "../../hooks/useAuth";
 
 const drawerWidth = 250;
 
 export default function MenuDrawer({ open, onClose }) {
-  const courses = ["Math", "Physics", "Computer Science", "Biology"];
+  const { courses, loading, error } = useCourses();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Drawer
@@ -45,6 +50,7 @@ export default function MenuDrawer({ open, onClose }) {
           variant="text"
           component={Link}
           to="/courses"
+          onClick={onClose}
           fullWidth
           sx={{
             justifyContent: "flex-start",
@@ -61,7 +67,6 @@ export default function MenuDrawer({ open, onClose }) {
               xs: "0.95rem",
               sm: "1rem",
             },
-
             "&:hover": {
               bgcolor: "action.hover",
             },
@@ -72,55 +77,97 @@ export default function MenuDrawer({ open, onClose }) {
 
         <Divider sx={{ mb: 1.5 }} />
 
-        <List disablePadding>
-          {courses.map((course) => (
-            <ListItem key={course} disablePadding>
-              <ListItemButton
-                component={Link}
-                to="/courses/:courseId"
-                sx={{
-                  borderRadius: 1,
-                  mx: 0.5,
-                  mb: 0.5,
-                  px: 1.25,
-                  py: 1,
-                  minHeight: {
-                    xs: 44,
-                    sm: 46,
-                  },
-                  alignItems: "center",
-
-                  "&:hover": {
-                    bgcolor: "action.hover",
-                  },
-                }}
-              >
-                <ListItemIcon
+        {!isAuthenticated ? null : loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              py: 3,
+            }}
+          >
+            <CircularProgress size={24} />
+          </Box>
+        ) : error ? (
+          <Typography
+            sx={{
+              px: 1,
+              py: 1,
+              color: "error.main",
+              fontSize: "0.95rem",
+            }}
+          >
+            {error}
+          </Typography>
+        ) : courses.length === 0 ? (
+          <Typography
+            sx={{
+              px: 1,
+              py: 1,
+              color: "text.secondary",
+              fontSize: "0.95rem",
+            }}
+          >
+            Няма записани курсове
+          </Typography>
+        ) : (
+          <List disablePadding>
+            {courses.map((course) => (
+              <ListItem key={course.id} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to={`/courses/${course.id}`}
+                  onClick={onClose}
                   sx={{
-                    minWidth: {
-                      xs: 34,
-                      sm: 36,
+                    borderRadius: 1,
+                    mx: 0.5,
+                    mb: 0.5,
+                    px: 1.25,
+                    py: 1,
+                    minHeight: {
+                      xs: 44,
+                      sm: 46,
+                    },
+                    alignItems: "center",
+                    "&:hover": {
+                      bgcolor: "action.hover",
                     },
                   }}
                 >
-                  <SchoolIcon color="primary" fontSize="small" />
-                </ListItemIcon>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: {
+                        xs: 34,
+                        sm: 36,
+                      },
+                    }}
+                  >
+                    <SchoolIcon color="primary" fontSize="small" />
+                  </ListItemIcon>
 
-                <ListItemText
-                  primary={course}
-                  primaryTypographyProps={{
-                    fontWeight: 500,
-                    fontSize: {
-                      xs: "0.95rem",
-                      sm: "1rem",
-                    },
-                    lineHeight: 1.2,
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+                  <ListItemText
+                    primary={course.title}
+                    secondary={`Code: ${course.join_code}`}
+                    primaryTypographyProps={{
+                      fontWeight: 500,
+                      fontSize: {
+                        xs: "0.95rem",
+                        sm: "1rem",
+                      },
+                      lineHeight: 1.2,
+                    }}
+                    secondaryTypographyProps={{
+                      fontSize: {
+                        xs: "0.78rem",
+                        sm: "0.82rem",
+                      },
+                      color: "text.secondary",
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        )}
       </Box>
     </Drawer>
   );

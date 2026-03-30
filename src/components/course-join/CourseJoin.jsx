@@ -1,4 +1,6 @@
+import { useState } from "react";
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -12,13 +14,40 @@ import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import CloseIcon from "@mui/icons-material/Close";
 import useLanguage from "../../hooks/useLanguage";
 
-export default function CourseJoin({ open, onClose }) {
+export default function CourseJoin({ open, onClose, onJoin, loading }) {
   const language = useLanguage();
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+
+  const resetForm = () => {
+    setCode("");
+    setError("");
+  };
+
+  const closeHandler = () => {
+    resetForm();
+    onClose();
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    const result = await onJoin(code);
+
+    if (!result.success) {
+      setError(result.error);
+      return;
+    }
+
+    resetForm();
+    onClose();
+  };
 
   return (
     <Backdrop
       open={open}
-      onClick={onClose}
+      onClick={closeHandler}
       sx={{
         zIndex: "modal",
         bgcolor: "rgba(0, 0, 0, 0.6)",
@@ -54,7 +83,7 @@ export default function CourseJoin({ open, onClose }) {
           }}
         >
           <IconButton
-            onClick={onClose}
+            onClick={closeHandler}
             size="small"
             sx={{
               position: "absolute",
@@ -95,6 +124,7 @@ export default function CourseJoin({ open, onClose }) {
 
           <Box
             component="form"
+            onSubmit={submitHandler}
             sx={{
               width: "100%",
               display: "flex",
@@ -103,8 +133,12 @@ export default function CourseJoin({ open, onClose }) {
               mt: 0.5,
             }}
           >
+            {error && <Alert severity="error">{error}</Alert>}
+
             <TextField
-              label={language.enterCode}
+              label={language.enterCode || "Enter code"}
+              value={code}
+              onChange={(e) => setCode(e.target.value.toUpperCase())}
               fullWidth
               required
               size="medium"
@@ -114,6 +148,7 @@ export default function CourseJoin({ open, onClose }) {
               type="submit"
               variant="contained"
               fullWidth
+              disabled={loading}
               sx={{
                 mt: 0.5,
                 minHeight: 44,
@@ -122,7 +157,7 @@ export default function CourseJoin({ open, onClose }) {
                 borderRadius: 1.2,
               }}
             >
-              {language.join}
+              {loading ? language.loading || "Loading..." : language.join}
             </Button>
           </Box>
         </Paper>

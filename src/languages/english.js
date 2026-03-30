@@ -10,6 +10,7 @@ const language = {
   addDropFiles: "Add / Drop files",
   send: "Send",
   start: "Start",
+  delete: 'Delete',
 
   firstGrade: "1st Grade",
   secondGrade: "2nd Grade",

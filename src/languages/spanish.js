@@ -10,6 +10,7 @@ const language = {
   addDropFiles: "Agregar / Eliminar archivos",
   send: "Enviar",
   start: "Comenzar",
+  delete: 'Borrar',
 
   firstGrade: "1.º grado",
   secondGrade: "2.º grado",
