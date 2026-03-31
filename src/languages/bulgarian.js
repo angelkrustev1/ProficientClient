@@ -24,6 +24,11 @@ const language = {
   eleventhGrade: "11-ти клас",
   twelwedGrade: "12-ти клас",
 
+  homeTitlePartOne: 'Най-лесният начин да организираш',
+  homeTitlePartTwo: 'работата на своя екип',
+  homeSubTitlePartOne: 'Комуникирайте, споделяйте идеи, управлявайте задачи и бъдете в синхрон с екипа си',
+  homeSubTitlePartTwo: '— независимо дали работите дистанционно, в офиса или някъде по средата.',
+
   bulgarian: "Български",
   english: "Английски",
 

@@ -7,11 +7,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuDrawer from "../menu-drawer/MenuDrawer";
 import ProfileMenu from "./profile-menu/ProfileMenu";
-import { Button } from "@mui/material";
-import { Link } from "react-router"; 
+import { Button, Typography } from "@mui/material";
+import { Link } from "react-router";
 import SearchBar from "../search-bar/SearchBar";
 import NoAuth from "./profile-menu/no-auth/NoAuth";
-import useAuth from "../../hooks/useAuth"; 
+import useAuth from "../../hooks/useAuth";
 
 export default function Navigation() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
-  const { isAuthenticated } = useAuth(); 
+  const { email, isAuthenticated } = useAuth();
 
   const drawerOpenHandler = () => setDrawerOpen(true);
   const drawerCloseHandler = () => setDrawerOpen(false);
@@ -143,6 +143,27 @@ export default function Navigation() {
 
                 {isAuthenticated ? (
                   <>
+                    <Typography
+                      variant="body2"
+                      title={email}
+                      sx={{
+                        display: { xs: "none", sm: "block" },
+                        fontSize: {
+                          sm: "0.95rem",
+                          md: "1rem",
+                        },
+                        fontWeight: 500,
+                        letterSpacing: "0.2px",
+                        opacity: 0.9,
+                        maxWidth: { sm: 140, md: 180, lg: 220 },
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {email}
+                    </Typography>
+
                     <IconButton
                       color="inherit"
                       onClick={menuOpenHander}

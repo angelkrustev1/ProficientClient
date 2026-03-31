@@ -1,40 +1,13 @@
 import { Box, Typography } from "@mui/material";
-import ActionCardCarousel from "../action-card-carousel/ActionCardCarousel";
+import { useTheme } from "@mui/material/styles";
 import useLanguage from "../../hooks/useLanguage";
-
-const sectionTitleStyles = {
-  fontWeight: 600,
-  color: "primary.main",
-  letterSpacing: "0.03em",
-  textShadow: "1px 1px 3px rgba(28, 55, 56, 0.2)",
-  fontSize: {
-    xs: "1.5rem",
-    sm: "1.75rem",
-    md: "2rem",
-  },
-  lineHeight: 1.2,
-  mb: {
-    xs: 2,
-    sm: 2.5,
-    md: 3,
-  },
-};
-
-const sectionContainerStyles = {
-  width: "100%",
-  maxWidth: "1400px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "stretch",
-  px: {
-    xs: 1.5,
-    sm: 2,
-    md: 3,
-  },
-};
+import useCourses from "../../hooks/useCourses";
+import JoinCourseForm from "../join-course-form/JoinCourseForm";
 
 export default function Home() {
+  const theme = useTheme();
   const language = useLanguage();
+  const { joinCourse, actionLoading } = useCourses();
 
   return (
     <Box
@@ -42,36 +15,70 @@ export default function Home() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        flexGrow: 1,
+        justifyContent: "center",
+        textAlign: "center",
+        gap: { xs: "1.5rem", md: "2rem" },
+        flex: 1,
         width: "100%",
-        my: {
-          xs: 3,
-          sm: 4,
-          md: 5,
-        },
-        gap: {
-          xs: 4,
-          sm: 5,
-          md: 6,
-        },
+        height: "100%",
+        px: { xs: 2, sm: 3, md: 4 },
+        py: { xs: 3, md: 4 },
+        boxSizing: "border-box",
       }}
     >
-      
-      <Box sx={sectionContainerStyles}>
-        <Typography variant="h3" align="center" gutterBottom sx={sectionTitleStyles}>
-          {language.finals}
-        </Typography>
+      <JoinCourseForm onJoin={joinCourse} loading={actionLoading} />
 
-        <ActionCardCarousel />
-      </Box>
+      <Typography
+        variant="h1"
+        sx={{
+          fontSize: {
+            xs: "1.9rem",
+            sm: "2.6rem",
+            md: "3.5rem",
+            lg: "4.5rem",
+          },
+          fontWeight: 700,
+          color: theme.palette.text.primary,
+          textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+          lineHeight: 1.15,
+          maxWidth: "1000px",
+          width: "100%",
+          wordBreak: "break-word",
+          overflowWrap: "break-word",
+          whiteSpace: "normal",
+        }}
+      >
+        {language.homeTitlePartOne}
+        <br />
+        {language.homeTitlePartTwo}
+      </Typography>
 
-      <Box sx={sectionContainerStyles}>
-        <Typography variant="h3" align="center" gutterBottom sx={sectionTitleStyles}>
-          {language.tests}
-        </Typography>
-
-        <ActionCardCarousel />
-      </Box>
+      <Typography
+        variant="h6"
+        sx={{
+          fontSize: {
+            xs: "0.95rem",
+            sm: "1.05rem",
+            md: "1.2rem",
+            lg: "1.35rem",
+          },
+          fontWeight: 400,
+          color: theme.palette.primary.main,
+          textAlign: "center",
+          textShadow: "1px 1px 3px rgba(0, 0, 0, 0.3)",
+          lineHeight: 1.6,
+          maxWidth: "850px",
+          width: "100%",
+          mb: { xs: 2, md: 4 },
+          wordBreak: "break-word",
+          overflowWrap: "break-word",
+          whiteSpace: "normal",
+        }}
+      >
+        {language.homeSubTitlePartOne}
+        <br />
+        {language.homeSubTitlePartTwo}
+      </Typography>
     </Box>
   );
 }

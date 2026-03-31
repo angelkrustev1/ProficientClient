@@ -30,10 +30,10 @@ function App() {
             <Navigation />
 
             <Routes>
-              {/* <Route index element={<Home />} /> */}
-              <Route index element={<CoursesPage />} />
+              <Route index element={<Home />} />
 
               <Route element={<AuthGuard />}>
+                <Route path="/courses" element={<CoursesPage />} />
                 <Route path="/exams/:examId" element={<Exam />} />
                 <Route path="/exams/:examId/result" element={<Result />} />
                 <Route path="/courses/:courseId" element={<CoursePage />} />

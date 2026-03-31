@@ -1,5 +1,3 @@
-import NoCourses from "../components/courses-page/no-courses/NoCourses";
-
 const language = {
   class: "Clase",
   subject: "Asignatura",
@@ -24,6 +22,11 @@ const language = {
   tenthGrade: "10.º grado",
   eleventhGrade: "11.º grado",
   twelwedGrade: "12.º grado",
+
+  homeTitlePartOne: 'La forma más sencilla de organizar',
+  homeTitlePartTwo: 'la colaboración de tu equipo',
+  homeSubTitlePartOne: 'Comunica, comparte ideas, gestiona tareas y mantente alineado con tu equipo',
+  homeSubTitlePartTwo: '— ya sea que trabajes de forma remota, en la oficina o en un punto intermedio.',
 
   language: "Idioma",
   bulgarian: "Búlgaro",
