@@ -5,10 +5,52 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import HistoryIcon from "@mui/icons-material/History";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Paper from "@mui/material/Paper";
+import Tooltip from "@mui/material/Tooltip";
 
-export default function Message() {
+function formatDate(dateString) {
+  try {
+    return new Intl.DateTimeFormat(undefined, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date(dateString));
+  } catch {
+    return dateString;
+  }
+}
+
+function getInitials(email) {
+  if (!email) {
+    return "?";
+  }
+
+  const namePart = email.split("@")[0].trim();
+
+  if (!namePart) {
+    return email.charAt(0).toUpperCase();
+  }
+
+  const parts = namePart.split(/[.\-_ ]+/).filter(Boolean);
+
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+
+  return parts
+    .slice(0, 2)
+    .map((part) => part.charAt(0).toUpperCase())
+    .join("");
+}
+
+export default function Message({
+  message,
+  isMine,
+  onDelete,
+  onToggleLike,
+}) {
   return (
     <ListItem
       component={Paper}
@@ -25,7 +67,6 @@ export default function Message() {
         flexDirection: "column",
       }}
     >
-      {/* Top bar */}
       <Box
         sx={{
           width: "100%",
@@ -42,24 +83,43 @@ export default function Message() {
             color: "text.secondary",
           }}
         >
-          25 април 2025
+          {formatDate(message.created_at)}
         </Typography>
 
-        <IconButton
-          size="small"
-          sx={{
-            color: "text.secondary",
-            "&:hover": {
-              backgroundColor: "action.hover",
-              color: "primary.main",
-            },
-          }}
-        >
-          <HistoryIcon fontSize="small" />
-        </IconButton>
+        {isMine ? (
+          <Tooltip title="Delete message">
+            <IconButton
+              size="small"
+              onClick={onDelete}
+              sx={{
+                color: "text.secondary",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                  color: "error.main",
+                },
+              }}
+            >
+              <DeleteOutlineIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Message info">
+            <IconButton
+              size="small"
+              sx={{
+                color: "text.secondary",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                  color: "primary.main",
+                },
+              }}
+            >
+              <HistoryIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
 
-      {/* Content */}
       <Box
         sx={{
           display: "flex",
@@ -81,7 +141,7 @@ export default function Message() {
               fontSize: "0.85rem",
             }}
           >
-            AC
+            {getInitials(message.author_email)}
           </Avatar>
         </ListItemAvatar>
 
@@ -92,7 +152,6 @@ export default function Message() {
             minWidth: 0,
           }}
         >
-          {/* Username */}
           <Typography
             variant="subtitle2"
             sx={{
@@ -101,10 +160,9 @@ export default function Message() {
               fontSize: { xs: "0.9rem", sm: "0.95rem" },
             }}
           >
-            Ali Connors
+            {message.author_email}
           </Typography>
 
-          {/* Message text */}
           <Typography
             variant="body2"
             sx={{
@@ -113,14 +171,12 @@ export default function Message() {
               lineHeight: 1.6,
               fontSize: { xs: "0.88rem", sm: "0.9rem" },
               wordBreak: "break-word",
+              whiteSpace: "pre-wrap",
             }}
           >
-            Why is the sky blue, and does it change based on location or time of
-            day? I’ve always wondered how the atmosphere works when traveling to
-            different regions.
+            {message.content}
           </Typography>
 
-          {/* Likes */}
           <Box
             sx={{
               display: "flex",
@@ -132,15 +188,20 @@ export default function Message() {
           >
             <IconButton
               size="small"
+              onClick={onToggleLike}
               sx={{
-                color: "text.secondary",
+                color: message.liked_by_me ? "primary.main" : "text.secondary",
                 "&:hover": {
                   color: "primary.main",
                   backgroundColor: "action.hover",
                 },
               }}
             >
-              <ThumbUpAltOutlinedIcon fontSize="small" />
+              {message.liked_by_me ? (
+                <ThumbUpAltIcon fontSize="small" />
+              ) : (
+                <ThumbUpAltOutlinedIcon fontSize="small" />
+              )}
             </IconButton>
 
             <Typography
@@ -150,7 +211,7 @@ export default function Message() {
                 fontSize: "0.85rem",
               }}
             >
-              12
+              {message.likes_count}
             </Typography>
           </Box>
         </Box>

@@ -6,7 +6,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import { useState } from "react";
 import useLanguage from "../../../hooks/useLanguage";
 
-export default function ChatMenu() {
+export default function ChatMenu({ onChangeOrder }) {
   const language = useLanguage();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -14,6 +14,11 @@ export default function ChatMenu() {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+
+  const handleOrderChange = (value) => {
+    onChangeOrder(value);
+    handleClose();
+  };
 
   return (
     <Box
@@ -82,7 +87,7 @@ export default function ChatMenu() {
         }}
       >
         <MenuItem
-          onClick={handleClose}
+          onClick={() => handleOrderChange("newest")}
           sx={{
             gap: 1,
             py: 1,
@@ -98,7 +103,7 @@ export default function ChatMenu() {
         </MenuItem>
 
         <MenuItem
-          onClick={handleClose}
+          onClick={() => handleOrderChange("oldest")}
           sx={{
             gap: 1,
             py: 1,

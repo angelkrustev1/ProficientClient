@@ -1,9 +1,27 @@
-import { Box, TextField, IconButton, Paper } from "@mui/material";
+import { useState } from "react";
+import { Box, TextField, IconButton, Paper, CircularProgress } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import useLanguage from "../../../hooks/useLanguage";
 
-export default function MessageForm() {
+export default function MessageForm({ onSubmit, submitting }) {
   const language = useLanguage();
+  const [content, setContent] = useState("");
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const trimmed = content.trim();
+    if (!trimmed) {
+      return;
+    }
+
+    try {
+      await onSubmit(trimmed);
+      setContent("");
+    } catch {
+      // parent handles errors
+    }
+  }
 
   return (
     <Box
@@ -12,6 +30,8 @@ export default function MessageForm() {
       }}
     >
       <Paper
+        component="form"
+        onSubmit={handleSubmit}
         elevation={0}
         sx={{
           width: "100%",
@@ -36,7 +56,10 @@ export default function MessageForm() {
             variant="outlined"
             fullWidth
             size="small"
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
             placeholder={`${language.enterMessage}...`}
+            disabled={submitting}
             sx={{
               backgroundColor: "base.light",
               borderRadius: 1,
@@ -63,6 +86,8 @@ export default function MessageForm() {
           />
 
           <IconButton
+            type="submit"
+            disabled={submitting || !content.trim()}
             sx={{
               width: { xs: 38, sm: 40, md: 42 },
               height: { xs: 38, sm: 40, md: 42 },
@@ -77,9 +102,17 @@ export default function MessageForm() {
                 boxShadow: "0 8px 22px rgba(28, 55, 56, 0.45)",
                 transform: "translateY(-1px)",
               },
+              "&.Mui-disabled": {
+                color: "rgba(255,255,255,0.8)",
+                backgroundColor: "action.disabled",
+              },
             }}
           >
-            <SendIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+            {submitting ? (
+              <CircularProgress size={18} color="inherit" />
+            ) : (
+              <SendIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+            )}
           </IconButton>
         </Box>
       </Paper>
