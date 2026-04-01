@@ -1,13 +1,89 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Link as MuiLink, Typography } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import SendIcon from "@mui/icons-material/Send";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import DescriptionIcon from "@mui/icons-material/Description";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRef, useState } from "react";
+import { Link, useParams } from "react-router";
 import useLanguage from "../../hooks/useLanguage";
+import useAssignmentDetails from "../../hooks/useAssignmentDetails";
+import * as assignmentApi from "../../api/assignmentApi";
+
+function getFileIcon(filename = "") {
+  const lower = filename.toLowerCase();
+
+  if (lower.endsWith(".pdf")) {
+    return <PictureAsPdfIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+  }
+
+  if (lower.endsWith(".doc") || lower.endsWith(".docx") || lower.endsWith(".txt")) {
+    return <DescriptionIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+  }
+
+  return <InsertDriveFileIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+}
 
 export default function AssignmentPage() {
   const language = useLanguage();
+  const { assignmentId, courseId } = useParams();
+  const { assignment, loading, error } = useAssignmentDetails(assignmentId);
+
+  const fileInputRef = useRef(null);
+  const [submissionFiles, setSubmissionFiles] = useState([]);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const fileChangeHandler = (event) => {
+    const files = Array.from(event.target.files || []);
+    setSubmissionFiles(files);
+  };
+
+  const submitHandler = async () => {
+    try {
+      setSubmitting(true);
+      setSubmitError("");
+      setSubmitSuccess("");
+
+      await assignmentApi.submitAssignment(assignmentId, submissionFiles);
+      setSubmitSuccess("Assignment submitted successfully.");
+      setSubmissionFiles([]);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (err) {
+      setSubmitError(err.message || "Failed to submit assignment.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", px: 2, py: 4 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
+
+  if (!assignment) {
+    return (
+      <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", px: 2, py: 4 }}>
+        <Alert severity="warning">Assignment not found.</Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -26,41 +102,55 @@ export default function AssignmentPage() {
         zIndex: 1,
       }}
     >
-      {/* Header */}
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          gap: 1,
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: 2,
           mb: { xs: 2.5, md: 3 },
         }}
       >
-        <Typography
-          sx={{
-            fontSize: { xs: "1.12rem", sm: "1.22rem", md: "1.35rem" },
-            fontWeight: 750,
-            letterSpacing: "0.2px",
-            color: "text.primary",
-            lineHeight: 1.3,
-          }}
-        >
-          {language.assignmentTitle}
-        </Typography>
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Typography
+            sx={{
+              fontSize: { xs: "1.12rem", sm: "1.22rem", md: "1.35rem" },
+              fontWeight: 750,
+              letterSpacing: "0.2px",
+              color: "text.primary",
+              lineHeight: 1.3,
+              mb: 1,
+            }}
+          >
+            {assignment.title}
+          </Typography>
 
-        <Typography
+          <Typography
+            sx={{
+              maxWidth: 900,
+              color: "text.secondary",
+              fontSize: { xs: "0.92rem", sm: "0.96rem", md: "0.98rem" },
+              lineHeight: { xs: 1.7, md: 1.8 },
+            }}
+          >
+            {assignment.description || "No description"}
+          </Typography>
+        </Box>
+
+        <Button
+          component={Link}
+          to={`/courses/${courseId}`}
+          startIcon={<ArrowBackIcon />}
           sx={{
-            maxWidth: 900,
-            color: "text.secondary",
-            fontSize: { xs: "0.92rem", sm: "0.96rem", md: "0.98rem" },
-            lineHeight: { xs: 1.7, md: 1.8 },
+            textTransform: "none",
+            fontWeight: 600,
+            flexShrink: 0,
           }}
         >
-          Описание на заданието. Прегледай предоставените файлове и подготви
-          своето решение за предаване.
-        </Typography>
+          {language.back || "Back to course"}
+        </Button>
       </Box>
 
-      {/* Files */}
       <Box sx={{ mb: { xs: 4, sm: 5, md: 7 } }}>
         <Typography
           sx={{
@@ -75,141 +165,86 @@ export default function AssignmentPage() {
         </Typography>
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 1.25, sm: 1.5 },
-              p: { xs: 1.25, sm: 1.5 },
-              borderRadius: 1.2,
-              border: "1px solid",
-              borderColor: "divider",
-              backgroundColor: "background.paper",
-              boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
-              minWidth: 0,
-            }}
-          >
-            <PictureAsPdfIcon
-              sx={{
-                color: "primary.main",
-                fontSize: { xs: 22, sm: 24 },
-                flexShrink: 0,
-              }}
-            />
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
-                  fontWeight: 600,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
+          {assignment.files?.length > 0 ? (
+            assignment.files.map((file) => (
+              <MuiLink
+                key={file.id}
+                href={file.file_url}
+                target="_blank"
+                rel="noreferrer"
+                underline="none"
+                sx={{ color: "inherit" }}
               >
-                task-details.pdf
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.8rem",
-                  color: "text.secondary",
-                }}
-              >
-                0.9 MB
-              </Typography>
-            </Box>
-          </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: { xs: 1.25, sm: 1.5 },
+                    p: { xs: 1.25, sm: 1.5 },
+                    borderRadius: 1.2,
+                    border: "1px solid",
+                    borderColor: "divider",
+                    backgroundColor: "background.paper",
+                    boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
+                    minWidth: 0,
+                  }}
+                >
+                  {getFileIcon(file.filename)}
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 1.25, sm: 1.5 },
-              p: { xs: 1.25, sm: 1.5 },
-              borderRadius: 1.2,
-              border: "1px solid",
-              borderColor: "divider",
-              backgroundColor: "background.paper",
-              boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
-              minWidth: 0,
-            }}
-          >
-            <DescriptionIcon
-              sx={{
-                color: "primary.main",
-                fontSize: { xs: 22, sm: 24 },
-                flexShrink: 0,
-              }}
-            />
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
-                  fontWeight: 600,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                rubric.docx
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.8rem",
-                  color: "text.secondary",
-                }}
-              >
-                0.3 MB
-              </Typography>
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 1.25, sm: 1.5 },
-              p: { xs: 1.25, sm: 1.5 },
-              borderRadius: 1.2,
-              border: "1px solid",
-              borderColor: "divider",
-              backgroundColor: "background.paper",
-              boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
-              minWidth: 0,
-            }}
-          >
-            <InsertDriveFileIcon
-              sx={{
-                color: "primary.main",
-                fontSize: { xs: 22, sm: 24 },
-                flexShrink: 0,
-              }}
-            />
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
-                  fontWeight: 600,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                examples.zip
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.8rem",
-                  color: "text.secondary",
-                }}
-              >
-                5.2 MB
-              </Typography>
-            </Box>
-          </Box>
+                  <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "0.88rem", sm: "0.92rem" },
+                        fontWeight: 600,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {file.filename}
+                    </Typography>
+                  </Box>
+                </Box>
+              </MuiLink>
+            ))
+          ) : (
+            <Typography sx={{ color: "text.secondary" }}>
+              No files attached.
+            </Typography>
+          )}
         </Box>
       </Box>
 
-      {/* Sticky action bar */}
+      {submitError && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {submitError}
+        </Alert>
+      )}
+
+      {submitSuccess && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {submitSuccess}
+        </Alert>
+      )}
+
+      {submissionFiles.length > 0 && (
+        <Box sx={{ mb: 2 }}>
+          {submissionFiles.map((file, index) => (
+            <Typography key={`${file.name}-${index}`} variant="body2" sx={{ color: "text.secondary" }}>
+              {file.name}
+            </Typography>
+          ))}
+        </Box>
+      )}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        hidden
+        onChange={fileChangeHandler}
+      />
+
       <Box
         sx={{
           position: "sticky",
@@ -231,6 +266,7 @@ export default function AssignmentPage() {
         <Button
           variant="outlined"
           startIcon={<AttachFileIcon />}
+          onClick={() => fileInputRef.current?.click()}
           sx={{
             flex: { xs: "1 1 100%", sm: "1 1 280px" },
             justifyContent: "flex-start",
@@ -255,6 +291,8 @@ export default function AssignmentPage() {
         <Button
           variant="contained"
           endIcon={<SendIcon />}
+          onClick={submitHandler}
+          disabled={submitting || submissionFiles.length === 0}
           sx={{
             flex: { xs: "1 1 100%", sm: "1 1 220px" },
             textTransform: "none",
@@ -272,7 +310,7 @@ export default function AssignmentPage() {
             },
           }}
         >
-          {language.send}
+          {submitting ? (language.loading || "Loading...") : language.send}
         </Button>
       </Box>
     </Box>

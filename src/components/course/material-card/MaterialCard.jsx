@@ -1,12 +1,50 @@
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Link } from "react-router";
+import { useState } from "react";
+import useAuth from "../../../hooks/useAuth";
+import * as materialApi from "../../../api/materialApi";
 
-export default function MaterialCard() {
+export default function MaterialCard({ material, courseId, onDeleted }) {
+  const { email } = useAuth();
+  const [deleting, setDeleting] = useState(false);
+
+  const isOwner =
+    email &&
+    material?.creator_email &&
+    email.toLowerCase() === material.creator_email.toLowerCase();
+
+  const deleteHandler = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${material.title}"?`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      setDeleting(true);
+      await materialApi.deleteMaterial(material.id);
+
+      if (onDeleted) {
+        await onDeleted();
+      }
+    } catch (error) {
+      alert(error.message || "Failed to delete material.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <Box
       component={Link}
-      to="/courses/:courseId/materials/:materialId"
+      to={`/courses/${courseId}/materials/${material.id}`}
       sx={{
         width: "100%",
         display: "flex",
@@ -42,7 +80,29 @@ export default function MaterialCard() {
         },
       }}
     >
-      {/* Icon block */}
+      {isOwner && (
+        <IconButton
+          onClick={deleteHandler}
+          disabled={deleting}
+          size="small"
+          sx={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            zIndex: 2,
+            color: "error.main",
+            backgroundColor: "background.paper",
+            border: "1px solid",
+            borderColor: "divider",
+            "&:hover": {
+              backgroundColor: "action.hover",
+            },
+          }}
+        >
+          <DeleteOutlineIcon fontSize="small" />
+        </IconButton>
+      )}
+
       <Box
         sx={{
           width: { xs: 48, sm: 56, md: 64 },
@@ -63,13 +123,13 @@ export default function MaterialCard() {
         />
       </Box>
 
-      {/* Text content */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           gap: 0.5,
           minWidth: 0,
+          pr: isOwner ? 5 : 0,
         }}
       >
         <Typography
@@ -81,7 +141,7 @@ export default function MaterialCard() {
             lineHeight: 1.3,
           }}
         >
-          Learning Material
+          {material.title}
         </Typography>
 
         <Typography
@@ -92,7 +152,7 @@ export default function MaterialCard() {
             wordBreak: "break-word",
           }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          {material.description || "No description"}
         </Typography>
       </Box>
     </Box>

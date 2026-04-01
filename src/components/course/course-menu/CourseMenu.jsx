@@ -4,10 +4,12 @@ import Fade from "@mui/material/Fade";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import AppsIcon from "@mui/icons-material/Apps";
+import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
 import useLanguage from "../../../hooks/useLanguage";
 
-export default function CourseMenu() {
+export default function CourseMenu({ filter, onFilterChange }) {
   const language = useLanguage();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -15,6 +17,18 @@ export default function CourseMenu() {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+
+  const selectFilterHandler = (value) => {
+    onFilterChange(value);
+    handleClose();
+  };
+
+  const filterLabel =
+    filter === "assignments"
+      ? language.assignments
+      : filter === "materials"
+      ? language.materials
+      : language.filters;
 
   return (
     <Box
@@ -47,7 +61,7 @@ export default function CourseMenu() {
           },
         }}
       >
-        {language.filters}
+        {filterLabel}
       </Button>
 
       <Menu
@@ -83,35 +97,73 @@ export default function CourseMenu() {
         }}
       >
         <MenuItem
-          onClick={handleClose}
+          onClick={() => selectFilterHandler("all")}
           sx={{
             gap: 1,
             py: 1,
             px: 1.5,
             fontSize: { xs: "0.9rem", sm: "0.95rem" },
+            display: "flex",
+            justifyContent: "space-between",
           }}
         >
-          <AssignmentIcon
-            fontSize="small"
-            sx={{ color: "primary.main", flexShrink: 0 }}
-          />
-          {language.assignments}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <AppsIcon
+              fontSize="small"
+              sx={{ color: "primary.main", flexShrink: 0 }}
+            />
+            {language.filters}
+          </Box>
+
+          {filter === "all" && <CheckIcon fontSize="small" color="primary" />}
         </MenuItem>
 
         <MenuItem
-          onClick={handleClose}
+          onClick={() => selectFilterHandler("assignments")}
           sx={{
             gap: 1,
             py: 1,
             px: 1.5,
             fontSize: { xs: "0.9rem", sm: "0.95rem" },
+            display: "flex",
+            justifyContent: "space-between",
           }}
         >
-          <MenuBookIcon
-            fontSize="small"
-            sx={{ color: "primary.main", flexShrink: 0 }}
-          />
-          {language.materials}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <AssignmentIcon
+              fontSize="small"
+              sx={{ color: "primary.main", flexShrink: 0 }}
+            />
+            {language.assignments}
+          </Box>
+
+          {filter === "assignments" && (
+            <CheckIcon fontSize="small" color="primary" />
+          )}
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => selectFilterHandler("materials")}
+          sx={{
+            gap: 1,
+            py: 1,
+            px: 1.5,
+            fontSize: { xs: "0.9rem", sm: "0.95rem" },
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <MenuBookIcon
+              fontSize="small"
+              sx={{ color: "primary.main", flexShrink: 0 }}
+            />
+            {language.materials}
+          </Box>
+
+          {filter === "materials" && (
+            <CheckIcon fontSize="small" color="primary" />
+          )}
         </MenuItem>
       </Menu>
     </Box>

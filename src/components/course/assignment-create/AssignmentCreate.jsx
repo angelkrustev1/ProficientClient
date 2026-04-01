@@ -1,4 +1,5 @@
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -11,15 +12,72 @@ import {
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloseIcon from "@mui/icons-material/Close";
+import { useRef, useState } from "react";
 import useLanguage from "../../../hooks/useLanguage";
+import * as assignmentApi from "../../../api/assignmentApi";
 
-export default function AssignmentCreate({ open, onClose }) {
+export default function AssignmentCreate({ open, onClose, courseId, onCreated }) {
   const language = useLanguage();
+  const fileInputRef = useRef(null);
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [files, setFiles] = useState([]);
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setFiles([]);
+    setError("");
+    setSubmitting(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const closeHandler = () => {
+    resetForm();
+    onClose();
+  };
+
+  const fileChangeHandler = (event) => {
+    const selectedFiles = Array.from(event.target.files || []);
+    setFiles(selectedFiles);
+  };
+
+  const submitHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      setSubmitting(true);
+      setError("");
+
+      await assignmentApi.createAssignment({
+        courseId,
+        title,
+        description,
+        files,
+      });
+
+      resetForm();
+      onClose();
+
+      if (onCreated) {
+        await onCreated();
+      }
+    } catch (err) {
+      setError(err.message || "Failed to create assignment.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Backdrop
       open={open}
-      onClick={onClose}
+      onClick={closeHandler}
       sx={{
         zIndex: "modal",
         bgcolor: "rgba(0, 0, 0, 0.6)",
@@ -55,7 +113,7 @@ export default function AssignmentCreate({ open, onClose }) {
         >
           <IconButton
             size="small"
-            onClick={onClose}
+            onClick={closeHandler}
             sx={{
               position: "absolute",
               top: 8,
@@ -91,11 +149,12 @@ export default function AssignmentCreate({ open, onClose }) {
               px: 2,
             }}
           >
-            {language.createMaterial}
+            {language.createAssignment || "Create Assignment"}
           </Typography>
 
           <Box
             component="form"
+            onSubmit={submitHandler}
             sx={{
               width: "100%",
               display: "flex",
@@ -104,24 +163,38 @@ export default function AssignmentCreate({ open, onClose }) {
               mt: 0.5,
             }}
           >
+            {error && <Alert severity="error">{error}</Alert>}
+
             <TextField
               label={language.title}
               fullWidth
               required
               size="small"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
 
             <TextField
               label={language.description}
               fullWidth
-              required
               multiline
               minRows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              hidden
+              onChange={fileChangeHandler}
             />
 
             <Button
               variant="outlined"
               startIcon={<AttachFileIcon />}
+              onClick={() => fileInputRef.current?.click()}
               sx={{
                 justifyContent: "flex-start",
                 textTransform: "none",
@@ -140,10 +213,25 @@ export default function AssignmentCreate({ open, onClose }) {
               {language.addFiles}
             </Button>
 
+            {files.length > 0 && (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                {files.map((file, index) => (
+                  <Typography
+                    key={`${file.name}-${index}`}
+                    variant="body2"
+                    sx={{ color: "text.secondary" }}
+                  >
+                    {file.name}
+                  </Typography>
+                ))}
+              </Box>
+            )}
+
             <Button
               type="submit"
               variant="contained"
               fullWidth
+              disabled={submitting}
               sx={{
                 mt: 0.5,
                 textTransform: "none",
@@ -156,7 +244,7 @@ export default function AssignmentCreate({ open, onClose }) {
                 },
               }}
             >
-              {language.create}
+              {submitting ? (language.loading || "Loading...") : language.create}
             </Button>
           </Box>
         </Paper>

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuDrawer from "../menu-drawer/MenuDrawer";
 import ProfileMenu from "./profile-menu/ProfileMenu";
 import { Button, Typography } from "@mui/material";
@@ -12,6 +12,16 @@ import { Link } from "react-router";
 import SearchBar from "../search-bar/SearchBar";
 import NoAuth from "./profile-menu/no-auth/NoAuth";
 import useAuth from "../../hooks/useAuth";
+
+function getInitials(email) {
+  if (!email) {
+    return "?";
+  }
+
+  const namePart = email.split("@")[0];
+
+  return namePart.slice(0, 2).toUpperCase();
+}
 
 export default function Navigation() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -172,17 +182,31 @@ export default function Navigation() {
                           xs: 0.25,
                           sm: 0.5,
                         },
+                        p: 0,
                         flexShrink: 0,
                       }}
                     >
-                      <AccountCircle
+                      <Avatar
                         sx={{
-                          fontSize: {
-                            xs: 30,
-                            sm: 32,
+                          bgcolor: "primary.dark",
+                          color: "primary.contrastText",
+                          width: {
+                            xs: 32,
+                            sm: 36,
                           },
+                          height: {
+                            xs: 32,
+                            sm: 36,
+                          },
+                          fontSize: {
+                            xs: "0.8rem",
+                            sm: "0.85rem",
+                          },
+                          fontWeight: 600,
                         }}
-                      />
+                      >
+                        {getInitials(email)}
+                      </Avatar>
                     </IconButton>
 
                     <ProfileMenu

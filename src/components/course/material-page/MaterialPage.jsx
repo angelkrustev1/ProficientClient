@@ -1,11 +1,54 @@
-import { Box, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Link as MuiLink, Typography } from "@mui/material";
 import DescriptionIcon from "@mui/icons-material/Description";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Link, useParams } from "react-router";
 import useLanguage from "../../../hooks/useLanguage";
+import useMaterialDetails from "../../../hooks/useMaterialDetails";
+
+function getFileIcon(filename = "") {
+  const lower = filename.toLowerCase();
+
+  if (lower.endsWith(".pdf")) {
+    return <PictureAsPdfIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+  }
+
+  if (lower.endsWith(".doc") || lower.endsWith(".docx") || lower.endsWith(".txt")) {
+    return <DescriptionIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+  }
+
+  return <InsertDriveFileIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+}
 
 export default function MaterialPage() {
   const language = useLanguage();
+  const { materialId, courseId } = useParams();
+  const { material, loading, error } = useMaterialDetails(materialId);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", px: 2, py: 4 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
+
+  if (!material) {
+    return (
+      <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", px: 2, py: 4 }}>
+        <Alert severity="warning">Material not found.</Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -24,45 +67,64 @@ export default function MaterialPage() {
         zIndex: 1,
       }}
     >
-      {/* Header + content */}
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          gap: 1,
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: 2,
           pb: { xs: 2.5, md: 3 },
         }}
       >
-        <Typography
+        <Box
           sx={{
-            fontSize: { xs: "1.12rem", sm: "1.22rem", md: "1.35rem" },
-            fontWeight: 750,
-            letterSpacing: "0.2px",
-            color: "text.primary",
-            lineHeight: 1.3,
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            minWidth: 0,
+            flex: 1,
           }}
         >
-          Title
-        </Typography>
+          <Typography
+            sx={{
+              fontSize: { xs: "1.12rem", sm: "1.22rem", md: "1.35rem" },
+              fontWeight: 750,
+              letterSpacing: "0.2px",
+              color: "text.primary",
+              lineHeight: 1.3,
+            }}
+          >
+            {material.title}
+          </Typography>
 
-        <Typography
+          <Typography
+            sx={{
+              maxWidth: 900,
+              color: "text.secondary",
+              fontSize: { xs: "0.92rem", sm: "0.96rem", md: "0.98rem" },
+              lineHeight: { xs: 1.7, md: 1.8 },
+            }}
+          >
+            {material.description || "No description"}
+          </Typography>
+        </Box>
+
+        <Button
+          component={Link}
+          to={`/courses/${courseId}`}
+          startIcon={<ArrowBackIcon />}
           sx={{
-            maxWidth: 900,
-            color: "text.secondary",
-            fontSize: { xs: "0.92rem", sm: "0.96rem", md: "0.98rem" },
-            lineHeight: { xs: 1.7, md: 1.8 },
+            textTransform: "none",
+            fontWeight: 600,
+            flexShrink: 0,
           }}
         >
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat non
-          qui vel tempora porro dolorum eveniet commodi modi, rem quas, optio
-          aperiam consequuntur, tempore iste? Est sint minus repudiandae
-          excepturi?
-        </Typography>
+          {language.back || "Back to course"}
+        </Button>
       </Box>
 
       <Box sx={{ height: { xs: 12, sm: 18, md: 24 } }} />
 
-      {/* Files section */}
       <Box
         sx={{
           pt: { xs: 2.5, md: 3 },
@@ -89,140 +151,54 @@ export default function MaterialPage() {
             gap: 1,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 1.25, sm: 1.5 },
-              p: { xs: 1.25, sm: 1.5 },
-              borderRadius: 1.2,
-              border: "1px solid",
-              borderColor: "divider",
-              backgroundColor: "background.paper",
-              boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
-              minWidth: 0,
-            }}
-          >
-            <PictureAsPdfIcon
-              sx={{
-                color: "primary.main",
-                fontSize: { xs: 22, sm: 24 },
-                flexShrink: 0,
-              }}
-            />
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
-                  fontWeight: 600,
-                  color: "text.primary",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
+          {material.files?.length > 0 ? (
+            material.files.map((file) => (
+              <MuiLink
+                key={file.id}
+                href={file.file_url}
+                target="_blank"
+                rel="noreferrer"
+                underline="none"
+                sx={{ color: "inherit" }}
               >
-                lecture-notes.pdf
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.8rem",
-                  color: "text.secondary",
-                }}
-              >
-                2.4 MB
-              </Typography>
-            </Box>
-          </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: { xs: 1.25, sm: 1.5 },
+                    p: { xs: 1.25, sm: 1.5 },
+                    borderRadius: 1.2,
+                    border: "1px solid",
+                    borderColor: "divider",
+                    backgroundColor: "background.paper",
+                    boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
+                    minWidth: 0,
+                  }}
+                >
+                  {getFileIcon(file.filename)}
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 1.25, sm: 1.5 },
-              p: { xs: 1.25, sm: 1.5 },
-              borderRadius: 1.2,
-              border: "1px solid",
-              borderColor: "divider",
-              backgroundColor: "background.paper",
-              boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
-              minWidth: 0,
-            }}
-          >
-            <DescriptionIcon
-              sx={{
-                color: "primary.main",
-                fontSize: { xs: 22, sm: 24 },
-                flexShrink: 0,
-              }}
-            />
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
-                  fontWeight: 600,
-                  color: "text.primary",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                assignment-instructions.docx
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.8rem",
-                  color: "text.secondary",
-                }}
-              >
-                1.1 MB
-              </Typography>
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 1.25, sm: 1.5 },
-              p: { xs: 1.25, sm: 1.5 },
-              borderRadius: 1.2,
-              border: "1px solid",
-              borderColor: "divider",
-              backgroundColor: "background.paper",
-              boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
-              minWidth: 0,
-            }}
-          >
-            <InsertDriveFileIcon
-              sx={{
-                color: "primary.main",
-                fontSize: { xs: 22, sm: 24 },
-                flexShrink: 0,
-              }}
-            />
-            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.88rem", sm: "0.92rem" },
-                  fontWeight: 600,
-                  color: "text.primary",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                references.zip
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.8rem",
-                  color: "text.secondary",
-                }}
-              >
-                6.8 MB
-              </Typography>
-            </Box>
-          </Box>
+                  <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "0.88rem", sm: "0.92rem" },
+                        fontWeight: 600,
+                        color: "text.primary",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {file.filename}
+                    </Typography>
+                  </Box>
+                </Box>
+              </MuiLink>
+            ))
+          ) : (
+            <Typography sx={{ color: "text.secondary" }}>
+              No files attached.
+            </Typography>
+          )}
         </Box>
       </Box>
     </Box>

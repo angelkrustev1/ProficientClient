@@ -28,17 +28,17 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
   const { userLogoutHandler } = useAuth();
   const navigate = useNavigate();
 
-  const joinOpenHandler = () => {
-    setJoinOpen(true);
-    onClose();
-  };
+  // const joinOpenHandler = () => {
+  //   setJoinOpen(true);
+  //   onClose();
+  // };
 
   const joinCloseHandler = () => setJoinOpen(false);
 
-  const createOpenHandler = () => {
-    setCreateOpen(true);
-    onClose();
-  };
+  // const createOpenHandler = () => {
+  //   setCreateOpen(true);
+  //   onClose();
+  // };
 
   const createCloseHandler = () => setCreateOpen(false);
 

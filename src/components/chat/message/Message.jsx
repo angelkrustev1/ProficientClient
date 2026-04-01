@@ -27,22 +27,9 @@ function getInitials(email) {
     return "?";
   }
 
-  const namePart = email.split("@")[0].trim();
+  const namePart = email.split("@")[0];
 
-  if (!namePart) {
-    return email.charAt(0).toUpperCase();
-  }
-
-  const parts = namePart.split(/[.\-_ ]+/).filter(Boolean);
-
-  if (parts.length === 1) {
-    return parts[0].slice(0, 2).toUpperCase();
-  }
-
-  return parts
-    .slice(0, 2)
-    .map((part) => part.charAt(0).toUpperCase())
-    .join("");
+  return namePart.slice(0, 2).toUpperCase();
 }
 
 export default function Message({
@@ -139,6 +126,7 @@ export default function Message({
               width: { xs: 36, sm: 40 },
               height: { xs: 36, sm: 40 },
               fontSize: "0.85rem",
+              fontWeight: 600,
             }}
           >
             {getInitials(message.author_email)}
