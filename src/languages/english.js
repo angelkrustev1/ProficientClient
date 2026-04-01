@@ -90,6 +90,21 @@ const language = {
   addFiles: "Add Files",
   create: "Create",
 
+  assignmentNotFount: 'Assignment not found.',
+  noFilesAttached: 'No files attached.',
+  assignmentSubmitted: 'Assignment submitted',
+  assignmentSubmissions: 'Assignment submissions',
+  submittedOn: 'Submitted on',
+  submittedFiles: 'Submitted files',
+  NoSubmittedFiles: 'No submitted files.',
+  MaterialNotFound: 'Material not found.',
+  backToAssignment: 'Back to assignment',
+  totalSubmissions: 'Total submissions',
+  latestSubmission: 'Latest submission',
+  noSubmissionsYet: 'No submissions yet.',
+  uploaded: 'Uploaded',
+  back: 'Back to course',
+
   enterMessage: "Enter message",
 
   test: "Test",

@@ -7,6 +7,8 @@ const endpoints = {
   edit: (assignmentId) => `/assignments/${assignmentId}/edit/`,
   delete: (assignmentId) => `/assignments/${assignmentId}/delete/`,
   submit: (assignmentId) => `/assignments/${assignmentId}/submission/`,
+  submissions: (assignmentId) => `/assignments/${assignmentId}/submissions/`,
+  mySubmission: (assignmentId) => `/assignments/${assignmentId}/my-submission/`,
 };
 
 function buildAssignmentFormData({ courseId, title, description, files = [] }) {
@@ -65,4 +67,12 @@ export function deleteAssignment(assignmentId) {
 
 export function submitAssignment(assignmentId, files) {
   return api.post(endpoints.submit(assignmentId), buildSubmissionFormData(files));
+}
+
+export function getAssignmentSubmissions(assignmentId) {
+  return api.get(endpoints.submissions(assignmentId));
+}
+
+export function getMyAssignmentSubmission(assignmentId) {
+  return api.get(endpoints.mySubmission(assignmentId));
 }

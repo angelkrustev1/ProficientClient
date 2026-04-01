@@ -8,7 +8,7 @@ const language = {
   addDropFiles: "Agregar / Eliminar archivos",
   send: "Enviar",
   start: "Comenzar",
-  delete: 'Borrar',
+  delete: "Borrar",
 
   firstGrade: "1.º grado",
   secondGrade: "2.º grado",
@@ -23,10 +23,12 @@ const language = {
   eleventhGrade: "11.º grado",
   twelwedGrade: "12.º grado",
 
-  homeTitlePartOne: 'La forma más sencilla de organizar',
-  homeTitlePartTwo: 'la colaboración de tu equipo',
-  homeSubTitlePartOne: 'Comunica, comparte ideas, gestiona tareas y mantente alineado con tu equipo',
-  homeSubTitlePartTwo: '— ya sea que trabajes de forma remota, en la oficina o en un punto intermedio.',
+  homeTitlePartOne: "La forma más sencilla de organizar",
+  homeTitlePartTwo: "la colaboración de tu equipo",
+  homeSubTitlePartOne:
+    "Comunica, comparte ideas, gestiona tareas y mantente alineado con tu equipo",
+  homeSubTitlePartTwo:
+    "— ya sea que trabajes de forma remota, en la oficina o en un punto intermedio.",
 
   language: "Idioma",
   bulgarian: "Búlgaro",
@@ -89,6 +91,21 @@ const language = {
   description: "Descripción",
   addFiles: "Agregar archivos",
   create: "Crear",
+
+  assignmentNotFount: "Tarea no encontrada.",
+  noFilesAttached: "No hay archivos adjuntos.",
+  assignmentSubmitted: "Tarea enviada",
+  assignmentSubmissions: "Entregas de la tarea",
+  submittedOn: "Enviado el",
+  submittedFiles: "Archivos enviados",
+  NoSubmittedFiles: "No hay archivos enviados.",
+  MaterialNotFound: "Material no encontrado.",
+  backToAssignment: "Volver a la tarea",
+  totalSubmissions: "Total de entregas",
+  latestSubmission: "Última entrega",
+  noSubmissionsYet: "Aún no hay entregas.",
+  uploaded: "Subido",
+  back: "Volver al curso",
 
   enterMessage: "Escribir mensaje",
 

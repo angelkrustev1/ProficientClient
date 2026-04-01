@@ -45,7 +45,7 @@ export default function MaterialPage() {
   if (!material) {
     return (
       <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", px: 2, py: 4 }}>
-        <Alert severity="warning">Material not found.</Alert>
+        <Alert severity="warning">{language.MaterialNotFound}</Alert>
       </Box>
     );
   }
@@ -196,7 +196,7 @@ export default function MaterialPage() {
             ))
           ) : (
             <Typography sx={{ color: "text.secondary" }}>
-              No files attached.
+              {language.noFilesAttached}
             </Typography>
           )}
         </Box>

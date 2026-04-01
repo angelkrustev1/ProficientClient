@@ -1,13 +1,15 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Link } from "react-router";
+import InboxIcon from "@mui/icons-material/Inbox";
+import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import * as assignmentApi from "../../../api/assignmentApi";
 
 export default function AssignmentCard({ assignment, courseId, onDeleted }) {
   const { email } = useAuth();
+  const navigate = useNavigate();
   const [deleting, setDeleting] = useState(false);
 
   const isOwner =
@@ -39,6 +41,12 @@ export default function AssignmentCard({ assignment, courseId, onDeleted }) {
     } finally {
       setDeleting(false);
     }
+  };
+
+  const submissionsClickHandler = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    navigate(`/courses/${courseId}/assignments/${assignment.id}/submissions`);
   };
 
   return (
@@ -85,26 +93,49 @@ export default function AssignmentCard({ assignment, courseId, onDeleted }) {
       }}
     >
       {isOwner && (
-        <IconButton
-          onClick={deleteHandler}
-          disabled={deleting}
-          size="small"
+        <Box
           sx={{
             position: "absolute",
             top: 10,
             right: 10,
             zIndex: 2,
-            color: "error.main",
-            backgroundColor: "background.paper",
-            border: "1px solid",
-            borderColor: "divider",
-            "&:hover": {
-              backgroundColor: "action.hover",
-            },
+            display: "flex",
+            gap: 1,
           }}
         >
-          <DeleteOutlineIcon fontSize="small" />
-        </IconButton>
+          <IconButton
+            onClick={submissionsClickHandler}
+            size="small"
+            sx={{
+              color: "primary.main",
+              backgroundColor: "background.paper",
+              border: "1px solid",
+              borderColor: "divider",
+              "&:hover": {
+                backgroundColor: "action.hover",
+              },
+            }}
+          >
+            <InboxIcon fontSize="small" />
+          </IconButton>
+
+          <IconButton
+            onClick={deleteHandler}
+            disabled={deleting}
+            size="small"
+            sx={{
+              color: "error.main",
+              backgroundColor: "background.paper",
+              border: "1px solid",
+              borderColor: "divider",
+              "&:hover": {
+                backgroundColor: "action.hover",
+              },
+            }}
+          >
+            <DeleteOutlineIcon fontSize="small" />
+          </IconButton>
+        </Box>
       )}
 
       <Box
@@ -133,7 +164,7 @@ export default function AssignmentCard({ assignment, courseId, onDeleted }) {
           flexDirection: "column",
           gap: 0.5,
           minWidth: 0,
-          pr: isOwner ? 5 : 0,
+          pr: isOwner ? 11 : 0,
         }}
       >
         <Typography

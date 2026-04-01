@@ -12,6 +12,7 @@ import Exam from './components/exam/Exam';
 import NotFound from './components/not-found/NotFound';
 import UserProvider from './providers/UserProvider';
 import AuthGuard from './guards/authGuard';
+import AssignmentSubmissions from './components/course/assignment-sumbmissions/AssignmentSubmissions';
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
                 <Route
                   path="/courses/:courseId/assignments/:assignmentId"
                   element={<AssignmentPage />}
+                />
+                <Route
+                  path="/courses/:courseId/assignments/:assignmentId/submissions"
+                  element={<AssignmentSubmissions />}
                 />
               </Route>
 

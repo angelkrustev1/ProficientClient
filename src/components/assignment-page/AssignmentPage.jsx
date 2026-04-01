@@ -5,10 +5,12 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import DescriptionIcon from "@mui/icons-material/Description";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useRef, useState } from "react";
 import { Link, useParams } from "react-router";
 import useLanguage from "../../hooks/useLanguage";
 import useAssignmentDetails from "../../hooks/useAssignmentDetails";
+import useMyAssignmentSubmission from "../../hooks/useMyAssignmentSubmission";
 import * as assignmentApi from "../../api/assignmentApi";
 
 function getFileIcon(filename = "") {
@@ -25,10 +27,30 @@ function getFileIcon(filename = "") {
   return <InsertDriveFileIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
 }
 
+function formatSubmittedAt(dateString) {
+  if (!dateString) {
+    return "";
+  }
+
+  const date = new Date(dateString);
+
+  return new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
+
 export default function AssignmentPage() {
   const language = useLanguage();
   const { assignmentId, courseId } = useParams();
   const { assignment, loading, error } = useAssignmentDetails(assignmentId);
+  const {
+    hasSubmission,
+    submission,
+    loading: submissionLoading,
+    error: submissionError,
+    refetchMySubmission,
+  } = useMyAssignmentSubmission(assignmentId);
 
   const fileInputRef = useRef(null);
   const [submissionFiles, setSubmissionFiles] = useState([]);
@@ -48,6 +70,8 @@ export default function AssignmentPage() {
       setSubmitSuccess("");
 
       await assignmentApi.submitAssignment(assignmentId, submissionFiles);
+      await refetchMySubmission();
+
       setSubmitSuccess("Assignment submitted successfully.");
       setSubmissionFiles([]);
 
@@ -61,7 +85,7 @@ export default function AssignmentPage() {
     }
   };
 
-  if (loading) {
+  if (loading || submissionLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
         <CircularProgress />
@@ -80,7 +104,7 @@ export default function AssignmentPage() {
   if (!assignment) {
     return (
       <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", px: 2, py: 4 }}>
-        <Alert severity="warning">Assignment not found.</Alert>
+        <Alert severity="warning">{language.assignmentNotFount}</Alert>
       </Box>
     );
   }
@@ -209,11 +233,17 @@ export default function AssignmentPage() {
             ))
           ) : (
             <Typography sx={{ color: "text.secondary" }}>
-              No files attached.
+              {language.noFilesAttached}
             </Typography>
           )}
         </Box>
       </Box>
+
+      {submissionError && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {submissionError}
+        </Alert>
+      )}
 
       {submitError && (
         <Alert severity="error" sx={{ mb: 2 }}>
@@ -234,6 +264,113 @@ export default function AssignmentPage() {
               {file.name}
             </Typography>
           ))}
+        </Box>
+      )}
+
+      {hasSubmission && submission && (
+        <Box
+          sx={{
+            mb: 2,
+            pt: { xs: 1.5, sm: 2 },
+            borderTop: "1px solid",
+            borderColor: "divider",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: { xs: "0.9rem", md: "0.95rem" },
+              fontWeight: 700,
+              letterSpacing: "0.15px",
+              color: "success.main",
+              mb: 1,
+            }}
+          >
+            {language.assignmentSubmitted}
+          </Typography>
+
+          {submission.submitted_at && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.75,
+                color: "text.secondary",
+                mb: 1.5,
+              }}
+            >
+              <AccessTimeIcon sx={{ fontSize: 16 }} />
+              <Typography
+                sx={{
+                  fontSize: { xs: "0.84rem", sm: "0.89rem" },
+                  color: "text.secondary",
+                }}
+              >
+                {language.submittedOn} {formatSubmittedAt(submission.submitted_at)}
+              </Typography>
+            </Box>
+          )}
+
+          <Typography
+            sx={{
+              fontSize: { xs: "0.9rem", md: "0.95rem" },
+              fontWeight: 700,
+              letterSpacing: "0.15px",
+              color: "text.primary",
+              mb: 1.5,
+            }}
+          >
+            {language.submittedFiles}
+          </Typography>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            {submission.files?.length > 0 ? (
+              submission.files.map((file) => (
+                <MuiLink
+                  key={file.id}
+                  href={file.file_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  underline="none"
+                  sx={{ color: "inherit" }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: { xs: 1.25, sm: 1.5 },
+                      p: { xs: 1.25, sm: 1.5 },
+                      borderRadius: 1.2,
+                      border: "1px solid",
+                      borderColor: "divider",
+                      backgroundColor: "background.paper",
+                      boxShadow: "0 6px 16px rgba(0, 15, 8, 0.08)",
+                      minWidth: 0,
+                    }}
+                  >
+                    {getFileIcon(file.filename)}
+
+                    <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                      <Typography
+                        sx={{
+                          fontSize: { xs: "0.88rem", sm: "0.92rem" },
+                          fontWeight: 600,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {file.filename}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </MuiLink>
+              ))
+            ) : (
+              <Typography sx={{ color: "text.secondary" }}>
+                {language.NoSubmittedFiles}
+              </Typography>
+            )}
+          </Box>
         </Box>
       )}
 

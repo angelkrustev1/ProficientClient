@@ -8,8 +8,7 @@ const language = {
   addDropFiles: "Добави / пусни файлове",
   send: "Предай",
   start: "Започни",
-  delete: 'Изтрий',
-
+  delete: "Изтрий",
 
   firstGrade: "1-ви клас",
   secondGrade: "2-ри клас",
@@ -24,10 +23,12 @@ const language = {
   eleventhGrade: "11-ти клас",
   twelwedGrade: "12-ти клас",
 
-  homeTitlePartOne: 'Най-лесният начин да организираш',
-  homeTitlePartTwo: 'работата на своя екип',
-  homeSubTitlePartOne: 'Комуникирайте, споделяйте идеи, управлявайте задачи и бъдете в синхрон с екипа си',
-  homeSubTitlePartTwo: '— независимо дали работите дистанционно, в офиса или някъде по средата.',
+  homeTitlePartOne: "Най-лесният начин да организираш",
+  homeTitlePartTwo: "работата на своя екип",
+  homeSubTitlePartOne:
+    "Комуникирайте, споделяйте идеи, управлявайте задачи и бъдете в синхрон с екипа си",
+  homeSubTitlePartTwo:
+    "— независимо дали работите дистанционно, в офиса или някъде по средата.",
 
   bulgarian: "Български",
   english: "Английски",
@@ -69,7 +70,7 @@ const language = {
   join: "Присъедини се",
 
   theme: "Тема",
-  language: 'Език',
+  language: "Език",
   light: "Светла",
   dark: "Тъмна",
   reset: "Нулиране",
@@ -89,6 +90,21 @@ const language = {
   description: "Описание",
   addFiles: "Добави файлове",
   create: "Създай",
+
+  assignmentNotFount: "Задачата не е намерена.",
+  noFilesAttached: "Няма прикачени файлове.",
+  assignmentSubmitted: "Задачата е предадена",
+  assignmentSubmissions: "Предавания на задачата",
+  submittedOn: "Предадено на",
+  submittedFiles: "Предадени файлове",
+  NoSubmittedFiles: "Няма предадени файлове.",
+  MaterialNotFound: "Материалът не е намерен.",
+  backToAssignment: "Обратно към задачата",
+  totalSubmissions: "Общ брой предавания",
+  latestSubmission: "Последно предаване",
+  noSubmissionsYet: "Все още няма предавания.",
+  uploaded: "Качено",
+  back: "Обратно към курса",
 
   enterMessage: "Въведи съобщение",
 

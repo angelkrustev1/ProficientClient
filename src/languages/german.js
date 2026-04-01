@@ -8,7 +8,7 @@ const language = {
   addDropFiles: "Dateien hinzufügen / entfernen",
   send: "Senden",
   start: "Starten",
-  delete: 'Löschen',
+  delete: "Löschen",
 
   firstGrade: "1. Klasse",
   secondGrade: "2. Klasse",
@@ -22,11 +22,13 @@ const language = {
   tenthGrade: "10. Klasse",
   eleventhGrade: "11. Klasse",
   twelwedGrade: "12. Klasse",
-  
-  homeTitlePartOne: 'Der einfachste Weg,',
-  homeTitlePartTwo: 'die Zusammenarbeit deines Teams zu organisieren',
-  homeSubTitlePartOne: 'Kommuniziere, teile Ideen, verwalte Aufgaben und bleibe mit deinem Team abgestimmt',
-  homeSubTitlePartTwo: '— egal ob du remote, im Büro oder irgendwo dazwischen arbeitest.',
+
+  homeTitlePartOne: "Der einfachste Weg,",
+  homeTitlePartTwo: "die Zusammenarbeit deines Teams zu organisieren",
+  homeSubTitlePartOne:
+    "Kommuniziere, teile Ideen, verwalte Aufgaben und bleibe mit deinem Team abgestimmt",
+  homeSubTitlePartTwo:
+    "— egal ob du remote, im Büro oder irgendwo dazwischen arbeitest.",
 
   language: "Sprache",
   bulgarian: "Bulgarisch",
@@ -89,6 +91,21 @@ const language = {
   description: "Beschreibung",
   addFiles: "Dateien hinzufügen",
   create: "Erstellen",
+
+  assignmentNotFount: "Aufgabe nicht gefunden.",
+  noFilesAttached: "Keine Dateien angehängt.",
+  assignmentSubmitted: "Aufgabe eingereicht",
+  assignmentSubmissions: "Abgaben der Aufgabe",
+  submittedOn: "Eingereicht am",
+  submittedFiles: "Eingereichte Dateien",
+  NoSubmittedFiles: "Keine eingereichten Dateien.",
+  MaterialNotFound: "Material nicht gefunden.",
+  backToAssignment: "Zurück zur Aufgabe",
+  totalSubmissions: "Gesamtanzahl der Abgaben",
+  latestSubmission: "Neueste Abgabe",
+  noSubmissionsYet: "Noch keine Abgaben.",
+  uploaded: "Hochgeladen",
+  back: "Zurück zum Kurs",
 
   enterMessage: "Nachricht eingeben",
 
