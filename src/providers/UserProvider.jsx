@@ -44,6 +44,16 @@ export default function UserProvider({ children }) {
     }
   }, [auth.refreshToken, setAuth]);
 
+  const updateUserEmail = useCallback(
+    (newEmail) => {
+      setAuth((prevAuth) => ({
+        ...prevAuth,
+        email: newEmail,
+      }));
+    },
+    [setAuth]
+  );
+
   const contextValue = useMemo(
     () => ({
       email: auth.email,
@@ -52,8 +62,9 @@ export default function UserProvider({ children }) {
       isAuthenticated: Boolean(auth.accessToken),
       userLoginHandler,
       userLogoutHandler,
+      updateUserEmail,
     }),
-    [auth, userLoginHandler, userLogoutHandler]
+    [auth, userLoginHandler, userLogoutHandler, updateUserEmail]
   );
 
   return (

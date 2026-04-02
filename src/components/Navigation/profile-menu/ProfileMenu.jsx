@@ -9,13 +9,16 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+
 import CourseJoin from "../../course-join/CourseJoin";
 import CourseCreate from "../../course-create/CourseCreate";
 import Settings from "../../settings/Settings";
+import ChangeEmail from "../../change-email/ChangeEmail";
+import ChangePassword from "../../change-password/ChangePassword";
 import useLanguage from "../../../hooks/useLanguage";
 import useAuth from "../../../hooks/useAuth";
 
@@ -23,22 +26,14 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
   const [joinOpen, setJoinOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [settingsOpen, settingsSetOpen] = useState(false);
+  const [changeEmailOpen, setChangeEmailOpen] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   const language = useLanguage();
   const { userLogoutHandler } = useAuth();
   const navigate = useNavigate();
 
-  // const joinOpenHandler = () => {
-  //   setJoinOpen(true);
-  //   onClose();
-  // };
-
   const joinCloseHandler = () => setJoinOpen(false);
-
-  // const createOpenHandler = () => {
-  //   setCreateOpen(true);
-  //   onClose();
-  // };
 
   const createCloseHandler = () => setCreateOpen(false);
 
@@ -48,6 +43,20 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
   };
 
   const settingsCloseHandler = () => settingsSetOpen(false);
+
+  const changeEmailOpenHandler = () => {
+    setChangeEmailOpen(true);
+    onClose();
+  };
+
+  const changeEmailCloseHandler = () => setChangeEmailOpen(false);
+
+  const changePasswordOpenHandler = () => {
+    setChangePasswordOpen(true);
+    onClose();
+  };
+
+  const changePasswordCloseHandler = () => setChangePasswordOpen(false);
 
   const logoutHandler = async () => {
     await userLogoutHandler();
@@ -133,6 +142,59 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
             />
           </ListItemButton>
 
+          <ListItemButton onClick={changeEmailOpenHandler} sx={menuItemStyles}>
+            <ListItemIcon
+              sx={{
+                color: "base.light",
+                minWidth: {
+                  xs: 34,
+                  sm: 36,
+                },
+              }}
+            >
+              <EmailIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText
+              primary={language.changeEmail || "Change Email"}
+              primaryTypographyProps={{
+                fontSize: {
+                  xs: "0.95rem",
+                  sm: "1rem",
+                },
+                fontWeight: 500,
+                lineHeight: 1.2,
+              }}
+            />
+          </ListItemButton>
+
+          <ListItemButton
+            onClick={changePasswordOpenHandler}
+            sx={menuItemStyles}
+          >
+            <ListItemIcon
+              sx={{
+                color: "base.light",
+                minWidth: {
+                  xs: 34,
+                  sm: 36,
+                },
+              }}
+            >
+              <LockIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText
+              primary={language.changePassword || "Change Password"}
+              primaryTypographyProps={{
+                fontSize: {
+                  xs: "0.95rem",
+                  sm: "1rem",
+                },
+                fontWeight: 500,
+                lineHeight: 1.2,
+              }}
+            />
+          </ListItemButton>
+
           <ListItemButton onClick={logoutHandler} sx={menuItemStyles}>
             <ListItemIcon
               sx={{
@@ -163,6 +225,11 @@ export default function ProfileMenu({ open, anchorEl, onClose }) {
       <CourseJoin open={joinOpen} onClose={joinCloseHandler} />
       <CourseCreate open={createOpen} onClose={createCloseHandler} />
       <Settings open={settingsOpen} onClose={settingsCloseHandler} />
+      <ChangeEmail open={changeEmailOpen} onClose={changeEmailCloseHandler} />
+      <ChangePassword
+        open={changePasswordOpen}
+        onClose={changePasswordCloseHandler}
+      />
     </>
   );
 }
