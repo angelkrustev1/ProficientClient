@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Alert,
   Avatar,
@@ -9,23 +9,23 @@ import {
   TextField,
   Typography,
   Backdrop,
-} from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import CloseIcon from '@mui/icons-material/Close';
-import useLanguage from '../../hooks/useLanguage';
-import useAuth from '../../hooks/useAuth';
-import * as authApi from '../../api/authApi';
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import CloseIcon from "@mui/icons-material/Close";
+import useLanguage from "../../hooks/useLanguage";
+import useAuth from "../../hooks/useAuth";
+import * as authApi from "../../api/authApi";
 
 export default function Login({ open, onClose }) {
   const language = useLanguage();
   const { userLoginHandler } = useAuth();
 
   const [values, setValues] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const changeHandler = (e) => {
@@ -33,15 +33,33 @@ export default function Login({ open, onClose }) {
       ...state,
       [e.target.name]: e.target.value,
     }));
+
+    if (error) {
+      setError("");
+    }
+  };
+
+  const resetForm = () => {
+    setValues({
+      email: "",
+      password: "",
+    });
+    setError("");
+    setIsSubmitting(false);
+  };
+
+  const closeHandler = () => {
+    resetForm();
+    onClose();
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    setError('');
+    setError("");
 
     if (!values.email.trim() || !values.password.trim()) {
-      setError('All fields are required.');
+      setError("All fields are required.");
       return;
     }
 
@@ -56,11 +74,7 @@ export default function Login({ open, onClose }) {
         refreshToken: result.refresh,
       });
 
-      setValues({
-        email: '',
-        password: '',
-      });
-
+      resetForm();
       onClose();
     } catch (err) {
       setError(err.message);
@@ -72,53 +86,51 @@ export default function Login({ open, onClose }) {
   return (
     <Backdrop
       open={open}
-      onClick={onClose}
+      onClick={closeHandler}
       sx={{
-        zIndex: 'modal',
-        bgcolor: 'rgba(0, 0, 0, 0.6)',
+        zIndex: "modal",
+        bgcolor: "rgba(0, 0, 0, 0.6)",
         px: 2,
-        py: { xs: 2, sm: 3 },
+        py: 3,
       }}
     >
       <Box
         onClick={(e) => e.stopPropagation()}
         sx={{
-          width: '100%',
+          width: "100%",
           maxWidth: 420,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Paper
-          elevation={0}
+          elevation={12}
           sx={{
-            position: 'relative',
-            width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto',
-            px: { xs: 2.5, sm: 4 },
+            position: "relative",
+            width: "100%",
+            px: { xs: 2.25, sm: 4 },
             py: { xs: 3, sm: 4 },
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: { xs: 2, sm: 2.5 },
-            backgroundColor: 'background.paper',
-            color: 'text.primary',
-            borderRadius: 1,
-            border: '1px solid',
-            borderColor: 'divider',
-            boxShadow: '0 22px 55px rgba(0, 15, 8, 0.35)',
-            boxSizing: 'border-box',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: { xs: 1.75, sm: 2 },
+            bgcolor: "background.paper",
+            color: "text.primary",
+            borderRadius: 1.5,
+            boxSizing: "border-box",
           }}
         >
           <IconButton
+            onClick={closeHandler}
             size="small"
-            onClick={onClose}
             sx={{
-              position: 'absolute',
-              top: 8,
-              right: 8,
-              color: 'text.secondary',
-              '&:hover': {
-                bgcolor: 'action.hover',
+              position: "absolute",
+              top: 10,
+              right: 10,
+              color: "text.secondary",
+              "&:hover": {
+                bgcolor: "action.hover",
               },
             }}
           >
@@ -127,94 +139,62 @@ export default function Login({ open, onClose }) {
 
           <Avatar
             sx={{
-              width: { xs: 44, sm: 48 },
-              height: { xs: 44, sm: 48 },
-              borderRadius: 1,
-              bgcolor: 'primary.main',
-              color: 'primary.contrastText',
-              boxShadow: '0 6px 16px rgba(28, 55, 56, 0.35)',
+              width: 44,
+              height: 44,
+              bgcolor: "action.selected",
+              color: "primary.main",
             }}
           >
-            <LockOutlinedIcon fontSize="small" />
+            <LockOutlinedIcon />
           </Avatar>
 
           <Typography
-            variant="h6"
+            variant="h5"
             sx={{
               fontWeight: 600,
-              letterSpacing: '0.3px',
-              textAlign: 'center',
-              fontSize: { xs: '1.1rem', sm: '1.25rem' },
+              letterSpacing: "0.3px",
+              textAlign: "center",
+              fontSize: { xs: "1.25rem", sm: "1.5rem" },
               lineHeight: 1.2,
             }}
           >
-            {language.login}
+            {language.login || "Login"}
           </Typography>
 
           <Box
             component="form"
             onSubmit={submitHandler}
             sx={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
               gap: 2,
               mt: 0.5,
             }}
           >
-            {error && <Alert severity="error">{error}</Alert>}
-
             <TextField
               name="email"
-              label={language.email}
+              label={language.email || "Email"}
               type="email"
-              fullWidth
-              size="small"
               value={values.email}
               onChange={changeHandler}
+              fullWidth
+              required
               autoComplete="email"
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 1,
-                  backgroundColor: 'base.light',
-                  '& fieldset': {
-                    borderColor: 'divider',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: 'primary.main',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: 'primary.main',
-                  },
-                },
-              }}
             />
 
             <TextField
               name="password"
-              label={language.password}
+              label={language.password || "Password"}
               type="password"
-              fullWidth
-              size="small"
               value={values.password}
               onChange={changeHandler}
+              fullWidth
+              required
               autoComplete="current-password"
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 1,
-                  backgroundColor: 'base.light',
-                  '& fieldset': {
-                    borderColor: 'divider',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: 'primary.main',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: 'primary.main',
-                  },
-                },
-              }}
             />
+
+            {error ? <Alert severity="error">{error}</Alert> : null}
 
             <Button
               type="submit"
@@ -222,22 +202,14 @@ export default function Login({ open, onClose }) {
               fullWidth
               disabled={isSubmitting}
               sx={{
-                mt: 1,
+                mt: 0.5,
                 minHeight: 44,
-                py: 1.2,
-                borderRadius: 1,
-                textTransform: 'none',
+                textTransform: "none",
                 fontWeight: 600,
-                backgroundColor: 'primary.main',
-                boxShadow: '0 8px 22px rgba(28, 55, 56, 0.35)',
-                '&:hover': {
-                  backgroundColor: 'base.mid',
-                  boxShadow: '0 10px 30px rgba(28, 55, 56, 0.45)',
-                  transform: 'translateY(-1px)',
-                },
+                borderRadius: 1.2,
               }}
             >
-              {isSubmitting ? 'Loading...' : language.login}
+              {isSubmitting ? "Loading..." : language.login || "Login"}
             </Button>
           </Box>
         </Paper>

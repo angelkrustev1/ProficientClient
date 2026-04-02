@@ -1,4 +1,12 @@
-import { Alert, Box, Button, Chip, CircularProgress, Link as MuiLink, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Link as MuiLink,
+  Typography,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -44,7 +52,11 @@ function getFileIcon(filename = "") {
     );
   }
 
-  if (lower.endsWith(".doc") || lower.endsWith(".docx") || lower.endsWith(".txt")) {
+  if (
+    lower.endsWith(".doc") ||
+    lower.endsWith(".docx") ||
+    lower.endsWith(".txt")
+  ) {
     return (
       <DescriptionIcon
         sx={{
@@ -98,7 +110,7 @@ export default function AssignmentSubmissions() {
 
   const totalFiles = submissions.reduce(
     (acc, submission) => acc + (submission.files?.length || 0),
-    0
+    0,
   );
 
   const latestSubmission = submissions.length > 0 ? submissions[0] : null;
@@ -195,11 +207,22 @@ export default function AssignmentSubmissions() {
           component={Link}
           to={`/courses/${courseId}/assignments/${assignmentId}`}
           startIcon={<ArrowBackIcon />}
-          sx={{
+          sx={(theme) => ({
             textTransform: "none",
             fontWeight: 600,
             flexShrink: 0,
-          }}
+
+            color: theme.palette.text.primary,
+            backgroundColor: "transparent",
+
+            "&:hover": {
+              backgroundColor: theme.palette.action.hover,
+            },
+
+            "&:active": {
+              backgroundColor: theme.palette.action.selected,
+            },
+          })}
         >
           {language.backToAssignment}
         </Button>
@@ -312,7 +335,9 @@ export default function AssignmentSubmissions() {
               color: "text.primary",
             }}
           >
-            {latestSubmission ? formatSubmittedAt(latestSubmission.submitted_at) : "—"}
+            {latestSubmission
+              ? formatSubmittedAt(latestSubmission.submitted_at)
+              : "—"}
           </Typography>
         </Box>
       </Box>
@@ -395,14 +420,17 @@ export default function AssignmentSubmissions() {
                         color: "text.secondary",
                       }}
                     >
-                      {language.submittedOn} {formatSubmittedAt(submission.submitted_at)}
+                      {language.submittedOn}{" "}
+                      {formatSubmittedAt(submission.submitted_at)}
                     </Typography>
                   </Box>
                 </Box>
 
                 <Chip
                   icon={<AssignmentTurnedInIcon />}
-                  label={submission.is_submitted ? "Submitted" : "Not submitted"}
+                  label={
+                    submission.is_submitted ? "Submitted" : "Not submitted"
+                  }
                   sx={{
                     height: 34,
                     borderRadius: 999,
@@ -416,7 +444,9 @@ export default function AssignmentSubmissions() {
                 />
               </Box>
 
-              <Box sx={{ px: { xs: 1.5, sm: 2, md: 2.5 }, py: { xs: 1.5, sm: 2 } }}>
+              <Box
+                sx={{ px: { xs: 1.5, sm: 2, md: 2.5 }, py: { xs: 1.5, sm: 2 } }}
+              >
                 <Typography
                   sx={{
                     fontSize: { xs: "0.9rem", md: "0.95rem" },
@@ -482,14 +512,17 @@ export default function AssignmentSubmissions() {
                                 color: "text.secondary",
                               }}
                             >
-                              {language.uploaded} {formatSubmittedAt(file.uploaded_at)}
+                              {language.uploaded}{" "}
+                              {formatSubmittedAt(file.uploaded_at)}
                             </Typography>
                           </Box>
                         </Box>
                       </MuiLink>
                     ))
                   ) : (
-                    <Typography sx={{ color: "text.secondary", fontSize: "0.92rem" }}>
+                    <Typography
+                      sx={{ color: "text.secondary", fontSize: "0.92rem" }}
+                    >
                       {language.noFilesAttached}
                     </Typography>
                   )}

@@ -1,4 +1,11 @@
-import { Alert, Box, Button, CircularProgress, Link as MuiLink, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Link as MuiLink,
+  Typography,
+} from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import SendIcon from "@mui/icons-material/Send";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
@@ -17,14 +24,42 @@ function getFileIcon(filename = "") {
   const lower = filename.toLowerCase();
 
   if (lower.endsWith(".pdf")) {
-    return <PictureAsPdfIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+    return (
+      <PictureAsPdfIcon
+        sx={{
+          color: "primary.main",
+          fontSize: { xs: 22, sm: 24 },
+          flexShrink: 0,
+        }}
+      />
+    );
   }
 
-  if (lower.endsWith(".doc") || lower.endsWith(".docx") || lower.endsWith(".txt")) {
-    return <DescriptionIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+  if (
+    lower.endsWith(".doc") ||
+    lower.endsWith(".docx") ||
+    lower.endsWith(".txt")
+  ) {
+    return (
+      <DescriptionIcon
+        sx={{
+          color: "primary.main",
+          fontSize: { xs: 22, sm: 24 },
+          flexShrink: 0,
+        }}
+      />
+    );
   }
 
-  return <InsertDriveFileIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+  return (
+    <InsertDriveFileIcon
+      sx={{
+        color: "primary.main",
+        fontSize: { xs: 22, sm: 24 },
+        flexShrink: 0,
+      }}
+    />
+  );
 }
 
 function formatSubmittedAt(dateString) {
@@ -169,6 +204,17 @@ export default function AssignmentPage() {
             textTransform: "none",
             fontWeight: 600,
             flexShrink: 0,
+
+            color: "text.primary",
+            backgroundColor: "transparent",
+
+            "&:hover": {
+              backgroundColor: "action.hover",
+            },
+
+            "&:active": {
+              backgroundColor: "action.selected",
+            },
           }}
         >
           {language.back || "Back to course"}
@@ -260,7 +306,11 @@ export default function AssignmentPage() {
       {submissionFiles.length > 0 && (
         <Box sx={{ mb: 2 }}>
           {submissionFiles.map((file, index) => (
-            <Typography key={`${file.name}-${index}`} variant="body2" sx={{ color: "text.secondary" }}>
+            <Typography
+              key={`${file.name}-${index}`}
+              variant="body2"
+              sx={{ color: "text.secondary" }}
+            >
               {file.name}
             </Typography>
           ))}
@@ -305,7 +355,8 @@ export default function AssignmentPage() {
                   color: "text.secondary",
                 }}
               >
-                {language.submittedOn} {formatSubmittedAt(submission.submitted_at)}
+                {language.submittedOn}{" "}
+                {formatSubmittedAt(submission.submitted_at)}
               </Typography>
             </Box>
           )}
@@ -447,7 +498,7 @@ export default function AssignmentPage() {
             },
           }}
         >
-          {submitting ? (language.loading || "Loading...") : language.send}
+          {submitting ? language.loading || "Loading..." : language.send}
         </Button>
       </Box>
     </Box>

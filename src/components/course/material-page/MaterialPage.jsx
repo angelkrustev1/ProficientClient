@@ -1,4 +1,11 @@
-import { Alert, Box, Button, CircularProgress, Link as MuiLink, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Link as MuiLink,
+  Typography,
+} from "@mui/material";
 import DescriptionIcon from "@mui/icons-material/Description";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
@@ -11,14 +18,42 @@ function getFileIcon(filename = "") {
   const lower = filename.toLowerCase();
 
   if (lower.endsWith(".pdf")) {
-    return <PictureAsPdfIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+    return (
+      <PictureAsPdfIcon
+        sx={{
+          color: "primary.main",
+          fontSize: { xs: 22, sm: 24 },
+          flexShrink: 0,
+        }}
+      />
+    );
   }
 
-  if (lower.endsWith(".doc") || lower.endsWith(".docx") || lower.endsWith(".txt")) {
-    return <DescriptionIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+  if (
+    lower.endsWith(".doc") ||
+    lower.endsWith(".docx") ||
+    lower.endsWith(".txt")
+  ) {
+    return (
+      <DescriptionIcon
+        sx={{
+          color: "primary.main",
+          fontSize: { xs: 22, sm: 24 },
+          flexShrink: 0,
+        }}
+      />
+    );
   }
 
-  return <InsertDriveFileIcon sx={{ color: "primary.main", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }} />;
+  return (
+    <InsertDriveFileIcon
+      sx={{
+        color: "primary.main",
+        fontSize: { xs: 22, sm: 24 },
+        flexShrink: 0,
+      }}
+    />
+  );
 }
 
 export default function MaterialPage() {
@@ -117,6 +152,17 @@ export default function MaterialPage() {
             textTransform: "none",
             fontWeight: 600,
             flexShrink: 0,
+
+            color: 'text.primary',
+            backgroundColor: "transparent",
+
+            "&:hover": {
+              backgroundColor: 'action.hover',
+            },
+
+            "&:active": {
+              backgroundColor: 'action.selected',
+            },
           }}
         >
           {language.back || "Back to course"}
