@@ -9,7 +9,6 @@ import MenuDrawer from "../menu-drawer/MenuDrawer";
 import ProfileMenu from "./profile-menu/ProfileMenu";
 import { Button, Typography } from "@mui/material";
 import { Link } from "react-router";
-import SearchBar from "../search-bar/SearchBar";
 import NoAuth from "./profile-menu/no-auth/NoAuth";
 import useAuth from "../../hooks/useAuth";
 
@@ -25,7 +24,6 @@ function getInitials(email) {
 
 export default function Navigation() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
@@ -148,7 +146,6 @@ export default function Navigation() {
                     flexShrink: 1,
                   }}
                 >
-                  {isAuthenticated && <SearchBar />}
                 </Box>
 
                 {isAuthenticated ? (
@@ -213,6 +210,7 @@ export default function Navigation() {
                       open={menuOpen}
                       anchorEl={menuAnchorEl}
                       onClose={menuCloseHandler}
+                      onLogoutComplete={drawerCloseHandler}
                     />
                   </>
                 ) : (

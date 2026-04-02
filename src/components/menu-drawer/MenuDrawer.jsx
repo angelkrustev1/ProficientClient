@@ -77,7 +77,18 @@ export default function MenuDrawer({ open, onClose }) {
 
         <Divider sx={{ mb: 1.5 }} />
 
-        {!isAuthenticated ? null : loading ? (
+        {!isAuthenticated ? (
+          <Typography
+            sx={{
+              px: 1,
+              py: 1,
+              color: "text.secondary",
+              fontSize: "0.95rem",
+            }}
+          >
+            Моля, влезте в профила си
+          </Typography>
+        ) : loading ? (
           <Box
             sx={{
               display: "flex",

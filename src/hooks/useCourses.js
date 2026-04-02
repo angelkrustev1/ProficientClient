@@ -6,14 +6,24 @@ import {
   joinCourse,
   leaveCourse,
 } from "../api/courseApi";
+import useAuth from "./useAuth";
 
 export default function useCourses() {
+  const { isAuthenticated } = useAuth();
+
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState("");
 
   const loadCourses = useCallback(async () => {
+    if (!isAuthenticated) {
+      setCourses([]);
+      setError("");
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
@@ -21,14 +31,22 @@ export default function useCourses() {
       setCourses(Array.isArray(result) ? result : []);
     } catch (err) {
       setError(err.message || "Failed to load courses.");
+      setCourses([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setCourses([]);
+      setError("");
+      setLoading(false);
+      return;
+    }
+
     loadCourses();
-  }, [loadCourses]);
+  }, [isAuthenticated, loadCourses]);
 
   const handleCreateCourse = async (courseData) => {
     try {
