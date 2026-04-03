@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 import {
   createCourseMessage,
@@ -7,6 +7,7 @@ import {
   likeCourseMessage,
   unlikeCourseMessage,
 } from "../api/chatApi";
+import { createCourseChatSocket } from "../api/chatSocket";
 
 const AUTH_KEY = "auth";
 
@@ -22,6 +23,7 @@ function getCurrentUserFromStorage() {
 
     return {
       email: parsed?.email ?? "",
+      accessToken: parsed?.accessToken ?? "",
     };
   } catch {
     return null;
@@ -41,6 +43,18 @@ function sortMessages(messages, order) {
   return sorted;
 }
 
+function upsertMessage(messages, incomingMessage) {
+  const exists = messages.some((message) => message.id === incomingMessage.id);
+
+  if (exists) {
+    return messages.map((message) =>
+      message.id === incomingMessage.id ? { ...message, ...incomingMessage } : message
+    );
+  }
+
+  return [incomingMessage, ...messages];
+}
+
 export default function useCourseChat() {
   const { courseId } = useParams();
 
@@ -49,6 +63,9 @@ export default function useCourseChat() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  const socketRef = useRef(null);
+  const reconnectTimeoutRef = useRef(null);
 
   const currentUser = useMemo(() => getCurrentUserFromStorage(), []);
 
@@ -76,6 +93,102 @@ export default function useCourseChat() {
     loadMessages();
   }, [loadMessages]);
 
+  useEffect(() => {
+    if (!courseId || !currentUser?.accessToken) {
+      return undefined;
+    }
+
+    let manuallyClosed = false;
+
+    const connectSocket = () => {
+      try {
+        socketRef.current = createCourseChatSocket(courseId, {
+          onOpen: () => {
+            setError("");
+          },
+          onMessage: (event) => {
+            if (event?.type === "connection_established") {
+              return;
+            }
+
+            if (event?.type === "message_created" && event.message) {
+              setMessages((prev) => upsertMessage(prev, event.message));
+              return;
+            }
+
+            if (event?.type === "message_deleted" && event.message_id) {
+              setMessages((prev) =>
+                prev.filter((message) => message.id !== event.message_id)
+              );
+              return;
+            }
+
+            if (event?.type === "message_reaction_updated" && event.message_id) {
+              setMessages((prev) =>
+                prev.map((message) => {
+                  if (message.id !== event.message_id) {
+                    return message;
+                  }
+
+                  const updatedMessage = {
+                    ...message,
+                    likes_count:
+                      typeof event.likes_count === "number"
+                        ? event.likes_count
+                        : message.likes_count,
+                  };
+
+                  if (
+                    currentUser?.email &&
+                    event.acted_by_email &&
+                    currentUser.email === event.acted_by_email
+                  ) {
+                    updatedMessage.liked_by_me = Boolean(event.liked);
+                  }
+
+                  return updatedMessage;
+                })
+              );
+            }
+          },
+          onError: () => {
+            // Keep silent here so temporary websocket handshake/reconnect
+            // issues do not show as a visible chat error.
+          },
+          onClose: () => {
+            if (manuallyClosed) {
+              return;
+            }
+
+            reconnectTimeoutRef.current = setTimeout(() => {
+              connectSocket();
+            }, 2000);
+          },
+        });
+      } catch (err) {
+        setError(err.message || "Failed to connect to chat.");
+      }
+    };
+
+    connectSocket();
+
+    return () => {
+      manuallyClosed = true;
+
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+
+      if (
+        socketRef.current &&
+        (socketRef.current.readyState === WebSocket.OPEN ||
+          socketRef.current.readyState === WebSocket.CONNECTING)
+      ) {
+        socketRef.current.close();
+      }
+    };
+  }, [courseId, currentUser]);
+
   const orderedMessages = useMemo(() => {
     return sortMessages(messages, order);
   }, [messages, order]);
@@ -92,7 +205,7 @@ export default function useCourseChat() {
 
     try {
       const createdMessage = await createCourseMessage(courseId, trimmed);
-      setMessages((prev) => [createdMessage, ...prev]);
+      setMessages((prev) => upsertMessage(prev, createdMessage));
     } catch (err) {
       setError(err.message || "Failed to send message.");
       throw err;
